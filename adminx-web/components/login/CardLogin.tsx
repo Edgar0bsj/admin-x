@@ -10,8 +10,10 @@ import {
 } from "@/components/ui/card";
 import { Input } from "@/components/ui/input";
 import { Label } from "@/components/ui/label";
+import { useRouter } from "next/navigation";
 
 export default function CardLogin() {
+  const router = useRouter();
   return (
     <Card className="w-full max-w-sm">
       <CardHeader>
@@ -22,7 +24,14 @@ export default function CardLogin() {
           Digite seu e-mail abaixo para acessar sua conta
         </CardDescription>
         <CardAction>
-          <Button variant="link">Registrar</Button>
+          <Button
+            onClick={() => {
+              router.push("/registre");
+            }}
+            variant="link"
+          >
+            Criar uma Conta
+          </Button>
         </CardAction>
       </CardHeader>
       <CardContent>
