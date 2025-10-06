@@ -26,7 +26,7 @@ A --backend --> C((Express))
 ## Como Executar o Projeto
 
 ```bash
-git  clone  https://github.com/seu-usuario/adminx.git
+git  clone  https://github.com/Edgar0bsj/admin-x.git
 cd  adminx
 
 npm run dev:front
