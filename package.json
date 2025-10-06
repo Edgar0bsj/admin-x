@@ -1,0 +1,13 @@
+{
+  "name": "admin-x",
+  "version": "1.0.0",
+  "description": "",
+  "license": "ISC",
+  "author": "EdgarBsj",
+  "type": "commonjs",
+  "main": "index.js",
+  "scripts": {
+    "dev:front": "npm run dev --prefix adminx-web",
+    "dev:back": "npm run dev --prefix [path-back]"
+  }
+}
