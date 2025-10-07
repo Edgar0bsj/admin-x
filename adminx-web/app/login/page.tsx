@@ -5,51 +5,42 @@ import { Input } from "@/components/ui/input";
 export default function Login() {
   return (
     <>
-      <section className="container mx-auto h-screen">
-        <div className="grid grid-cols-3 grid-row-3 gap-1 h-full place-items-center justify-items-center">
-          <div></div>
-          <div></div>
-          <div></div>
-          {/*  */}
-          <div></div>
-          <div className="container mx-auto">
-            <div className="grid grid-row-6 gap-1">
-              {/* row 1 */}
-              <div className="flex justify-center mb-5">
-                <h1 className="text-6xl italic font-bold">Admin X</h1>
-              </div>
-              {/* row 2 */}
-              <div className="flex justify-start">
-                <label>Email</label>
-              </div>
-              {/* row 3 */}
-              <div className="border-2 border-solid rounded-lg mb-3">
-                <Input placeholder="Usuario@email.com" />
-              </div>
-              {/* row 4 */}
-              <div className="flex justify-start">
-                <label>Senha</label>
-              </div>
-              {/* row 5 */}
-              <div className="border-2 border-solid rounded-lg">
-                <Input type="password" placeholder="*********" />
-              </div>
-              {/* row 6 */}
-              <div className="flex justify-center gap-4 mt-5">
-                <Button className="w-40" variant="outline">
-                  Entrar
-                </Button>
-                <Button variant="outline">Criar uma conta</Button>
-              </div>
+      <div className="min-h-screen flex items-center justify-center p-4">
+        <div className="w-full max-w-sm shadow-md rounded-lg p-6 sm:p-8 md:max-w-md">
+          <h1 className="text-6xl font-semibold text-center mb-6 font-bold italic">
+            Admin X
+          </h1>
+
+          <form className="space-y-4">
+            <div>
+              <label className="block text-sm font-medium mb-1">E-mail</label>
+              <Input
+                type="email"
+                placeholder="Digite seu e-mail"
+                className="w-full border border-gray-300 rounded-lg px-3 py-2 focus:outline-none focus:ring-2 focus:ring-blue-500"
+              />
             </div>
-          </div>
-          <div></div>
-          {/*  */}
-          <div></div>
-          <div></div>
-          <div></div>
+
+            <div>
+              <label className="block text-sm font-medium mb-1">Senha</label>
+              <Input
+                type="password"
+                placeholder="Digite sua senha"
+                className="w-full border border-gray-300 rounded-lg px-3 py-2 focus:outline-none focus:ring-2 focus:ring-blue-500"
+              />
+            </div>
+            <Button type="submit" className="w-full py-4 mt-5">
+              Entrar
+            </Button>
+          </form>
+
+          <p className="text-end text-sm text-gray-500 mt-4">
+            <a href="#" className="text-blue-600 hover:underline">
+              Cadastre-se
+            </a>
+          </p>
         </div>
-      </section>
+      </div>
     </>
   );
 }
