@@ -2,20 +2,21 @@ import type { Request, Response, NextFunction } from "express";
 import jwt from "jsonwebtoken";
 import env from "../../config/env.js";
 
-type JwtPayload = {
+type JwtPayload = jwt.JwtPayload & {
   email: String;
 };
+type Header = string | undefined;
 
-export default async function profileController(
+export default async function checkTokenController(
   req: Request,
   res: Response,
   next: NextFunction
 ) {
   try {
-    const auth: string | undefined = req.headers.authorization;
+    const auth = req.headers.authorization as Header;
     if (!auth) return res.status(401).json({ message: "Token ausente" });
 
-    const token: string = auth.split(" ")[1] as string;
+    const token = auth.split(" ")[1] as string;
 
     const decoded = jwt.verify(token, env.JWT_SECRET) as JwtPayload;
 

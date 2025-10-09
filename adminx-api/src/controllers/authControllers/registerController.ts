@@ -17,7 +17,7 @@ export default async function registerController(
       password: hashed,
     });
 
-    res.status(201).json({ message: "[Ok]>> ok" });
+    res.status(201).end();
   } catch (error) {
     console.log(error);
     res.status(400).json({ message: "Temos que ver isso ai" });

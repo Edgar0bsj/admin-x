@@ -12,7 +12,6 @@ export default async function loginController(
   try {
     const { email, password } = req.body;
     const [_user, ..._] = await users.find({ email });
-    console.log(_user);
 
     if (!_user)
       return res.status(401).json({ message: "Credenciais inválidas" });
