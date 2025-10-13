@@ -3,8 +3,7 @@ import cors from "cors";
 
 export default async function expressConfig(app: express.Application) {
   const corsOptions = {
-    origin: "http://localhost:3000/",
-    optionsSuccessStatus: 200,
+    origin: "http://localhost:3000",
   };
 
   app.use(express.json());

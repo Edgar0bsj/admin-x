@@ -16,7 +16,7 @@ export default function LayoutPages(props: any) {
               <a href="#">
                 <Button className="bg-cyan-500">Perfil</Button>
               </a>
-              <a href="#">
+              <a href="#" onClick={props.logout}>
                 <Button className="bg-cyan-500">Sair</Button>
               </a>
             </nav>
