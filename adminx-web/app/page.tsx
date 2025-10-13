@@ -2,28 +2,34 @@
 import LayoutPages from "@/components/LayoutPages";
 import { useEffect, useState } from "react";
 import { useRouter } from "next/navigation";
+import api from "@/services/api";
 
 export default function Home() {
+  // =================
+  // hook State
   const [user, setUser] = useState("");
+  // =================
+  // hook Router
   const router = useRouter();
 
+  // =================
+  // hook Effect
   useEffect(() => {
-    try {
-      (async () => {
+    const checkAuth = async () => {
+      try {
         const token = localStorage.getItem("token");
-        const res = await fetch("http://localhost:3006/auth/check", {
+        const res = await api.get<{ email: string }>("/auth/check", {
           headers: { Authorization: `Bearer ${token}` },
         });
-        if (!res.ok) {
-          router.push("/login");
-        }
-        const resData = await res.json();
-        setUser(resData.message);
-      })();
-    } catch (error) {
-      router.push("/login");
-    }
+        setUser(res.data.email);
+      } catch (error) {
+        router.push("/login");
+      }
+    };
+
+    checkAuth();
   }, []);
+
   //
   function logout() {
     localStorage.removeItem("token");
@@ -33,17 +39,23 @@ export default function Home() {
   return (
     <>
       <LayoutPages logout={logout}>
-        {/* CONTEÚDO PRINCIPAL */}
-        <main className="flex-grow">
-          <div className="container mx-auto p-4">
-            <h2 className="text-2xl font-semibold mb-4">Bem-vindo! {user}</h2>
-            <p className="text-gray-700 leading-relaxed">
-              Lorem ipsum dolor sit amet, consectetur adipiscing elit. Nullam ac
-              vestibulum erat, nec ultricies lorem. Sed efficitur, tortor ac
-              ultrices luctus, nisl est ultrices metus, non ultricies eros nulla
-              nec turpis.
-            </p>
+        <main className="container mx-auto px-4 py-6 grid grid-cols-1 lg:grid-cols-2 gap-6 min-h-screen">
+          <div className="rounded-lg border border-sky-500 flex flex-col items-center col-span-2 justify-center text-5xl italic font-bold">
+            <strong>Visão Geral</strong>
           </div>
+          <aside>
+            <div className="rounded-lg border border-sky-500 shadow rounded-lg p-6 sm:p-10">
+              <div className="flex flex-col gap-2 text-center items-center">
+                <p className="font-semibold">Email: {user}</p>
+                <div className="text-sm flex items-center">
+                  <p>Conteudo!</p>
+                </div>
+              </div>
+              <div className="flex justify-center items-center gap-4 my-4 flex-wrap">
+                <p>Conteudo!</p>
+              </div>
+            </div>
+          </aside>
         </main>
       </LayoutPages>
     </>

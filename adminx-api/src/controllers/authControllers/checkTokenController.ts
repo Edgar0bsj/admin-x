@@ -20,7 +20,7 @@ export default async function checkTokenController(
 
     const decoded = jwt.verify(token, env.JWT_SECRET) as JwtPayload;
 
-    res.json({ message: `Bem-vindo, ${decoded.email}` });
+    res.json({ email: decoded.email });
   } catch {
     res.status(401).json({ message: "Token inválido ou expirado" });
   }
