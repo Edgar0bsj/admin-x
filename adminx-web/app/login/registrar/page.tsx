@@ -18,7 +18,7 @@ export default function Registrar() {
   const router = useRouter();
   // ====================
   // onSubmit
-  async function handleSubmit(e: any) {
+  async function handleSubmit(e: { preventDefault(): void }) {
     e.preventDefault();
     if (password1 != password2) {
       setMsgError(["Senha não é compativel"]);
