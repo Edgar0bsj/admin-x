@@ -1,8 +1,8 @@
-import type { Request, Response, NextFunction } from "express";
-import bcrypt from "bcryptjs";
-import userModel from "../../models/userModel.js";
 import registerValidation from "../../validation/register.validation.js";
+import type { Request, Response, NextFunction } from "express";
+import userModel from "../../models/userModel.js";
 import AppError from "../../errs/appError.js";
+import bcrypt from "bcryptjs";
 
 export default async function registerController(
   req: Request,
