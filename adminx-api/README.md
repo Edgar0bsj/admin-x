@@ -31,12 +31,11 @@
 
 #### **• Endpoints**
 
-| Método | Rota             | Descrição                    |
-| ------ | ---------------- | ---------------------------- |
-| POST   | `/auth/register` | Registro de novo usuário     |
-| POST   | `/auth/login`    | Login e geração de token     |
-| POST   | `/auth/logout`   | Logout e revogação de token  |
-| GET    | `/auth/me`       | Dados do usuário autenticado |
+| Método | Rota                | Descrição                    |
+| ------ | ------------------- | ---------------------------- |
+| POST   | `/auth/register`    | Registro de novo usuário     |
+| POST   | `/auth/login`       | Login e geração de token     |
+| GET    | `/auth/verifyToken` | Dados do usuário autenticado |
 
 ---
 

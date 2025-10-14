@@ -1,27 +1,35 @@
 import type { Request, Response, NextFunction } from "express";
 import jwt from "jsonwebtoken";
 import env from "../../config/env.js";
+import AppError from "../../errs/appError.js";
 
 type JwtPayload = jwt.JwtPayload & {
   email: String;
 };
 type Header = string | undefined;
 
-export default async function checkTokenController(
+type RequestUser = Request & {
+  user: object;
+};
+
+export default async function verifyTokenController(
   req: Request,
   res: Response,
   next: NextFunction
 ) {
   try {
     const auth = req.headers.authorization as Header;
-    if (!auth) return res.status(401).json({ message: "Token ausente" });
+    if (!auth) throw new AppError("Token ausente", 400);
 
     const token = auth.split(" ")[1] as string;
 
     const decoded = jwt.verify(token, env.JWT_SECRET) as JwtPayload;
+    if (!auth) throw new AppError("Token inválido ou expirado", 400);
 
-    res.json({ email: decoded.email });
-  } catch {
-    res.status(401).json({ message: "Token inválido ou expirado" });
+    (req as RequestUser).user = decoded;
+    console.log((req as any).user);
+    next();
+  } catch (err) {
+    next(err);
   }
 }
