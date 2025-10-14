@@ -1,17 +1,18 @@
 import { Router } from "express";
-import registerController from "../controllers/authControllers/registerController.js";
-import loginController from "../controllers/authControllers/loginController.js";
-import checkToken from "../controllers/authControllers/checkTokenController.js";
+import registerController from "../controllers/authControllers/register.controller.js";
 
 const router = Router();
 
-// Registro
+// Registro de novo usuário
 router.post("/register", registerController);
 
-// Login
-router.post("/login", loginController);
+// Login e geração de token
+router.post("/login", () => {});
 
-// Verificar token
-router.get("/check", checkToken);
+// Dados do usuário autenticado
+router.get("/me", () => {});
+
+// Logout e revogação de token
+router.post("/logout", () => {});
 
 export default router;

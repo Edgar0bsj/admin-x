@@ -1,6 +1,6 @@
 import { z } from "zod";
 
-const registerUser = z.object({
+const registerValidation = z.object({
   name: z
     .string()
     .min(3, "O nome precisa ter no mínimo 3 caracteres")
@@ -9,4 +9,4 @@ const registerUser = z.object({
   password: z.string().min(6, "A senha precisa ter no mínimo 6 caracteres"),
 });
 
-export default registerUser;
+export default registerValidation;

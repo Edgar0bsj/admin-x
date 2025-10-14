@@ -1,12 +1,13 @@
 # ADMIN-X API RESTful
 
 - [ADMIN-X API RESTful](#admin-x-api-restful)
-  - [Entidades](#entidades)
+  - [**-\> Entidade Base**](#--entidade-base)
     - [🔐 **Autenticação** (`Auth`)](#-autenticação-auth)
       - [**• Endpoints**](#-endpoints)
     - [👤 **Usuário** (`User`)](#-usuário-user)
       - [**• Endpoints**](#-endpoints-1)
       - [**• Modelagem**](#-modelagem)
+  - [**-\> Entidade Finance**](#--entidade-finance)
     - [🏦 **Conta Bancária** (`Account`)](#-conta-bancária-account)
       - [**• Endpoints**](#-endpoints-2)
       - [**• Modelagem**](#-modelagem-1)
@@ -24,7 +25,7 @@
 
 ---
 
-## Entidades
+## **-> Entidade Base**
 
 ### 🔐 **Autenticação** (`Auth`)
 
@@ -63,6 +64,8 @@
 ```
 
 ---
+
+## **-> Entidade Finance**
 
 ### 🏦 **Conta Bancária** (`Account`)
 

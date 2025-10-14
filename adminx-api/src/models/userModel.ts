@@ -4,20 +4,20 @@ const userSchema = new mongoose.Schema(
   {
     name: {
       type: String,
-      required: [true, "O nome é obrigatório"],
-      trim: true,
-      minlength: [3, "O nome tem que ter no mínimo 3 letras"],
-      maxlength: [50, "O nome não pode ter mais de 50 dígitos"],
+      required: true,
+      trim: true, //Permite espaço
+      minlength: 3,
+      maxlength: 50,
       lowercase: true,
     },
     email: {
       type: String,
       require: true,
-      unique: [true, "Esse e-mail já existe"],
+      unique: [true, "Esse Email ja existe!"],
       lowercase: true,
-      match: [/^\S+@\S+\.\S+$/, "E-mail inválido"],
+      match: /^\S+@\S+\.\S+$/,
     },
-    password: {
+    passwordHash: {
       type: String,
       required: true,
       minlength: 6,
@@ -30,6 +30,6 @@ const userSchema = new mongoose.Schema(
   }
 );
 
-const userModel = mongoose.model("User", userSchema);
+const userModel = mongoose.model("Users", userSchema);
 
 export default userModel;
