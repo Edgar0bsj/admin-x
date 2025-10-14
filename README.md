@@ -1,8 +1,8 @@
 # --- AdminX---
 
-O **AdminX** foi criado para servir como uma base de administração universal, podendo ser adaptado para diferentes tipos de negócios — barbearias, clínicas, salões de beleza, eventos e mais.
+O **AdminX** foi criado com o objetivo de organizar e controlar os problemas do dia a dia. A aplicação consiste em uma **API RESTful** construída com foco em escalabilidade e segurança, e um **frontend** simples que consome essa API para visualização e interação dos dados.
 
-# Estrutura do Projeto
+## Estrutura do Projeto
 
 ```mermaid
 graph LR
@@ -10,32 +10,91 @@ A[admin-x]--frontend --> B((NextJs))
 A --backend --> C((Express))
 ```
 
+---
+
 ## Tecnologias Utilizadas
 
-#### Frontend
+### Backend
 
-- [x] Shadcn
-- [x] NextJs / Ts
-- [x] Tailwindcss
+> Dependências
 
-#### Backend
+- Node.js
+- Express
+- Mongoose
+- JWT
+- Zod
+- cors
+- bcryptjs
+- dotenv
 
-- [x] Express
-- [x] MongoDB
+> Dependências de desenvolvimento
 
-## Como Executar o Projeto
+- @types/cors
+- @types/express
+- @types/jsonwebtoken
+- @types/mongoose
+- @types/node
+- typescript
+
+### Frontend
+
+- Next.Js
+- Axios
+- Tailwindcss
+- shadcn
+
+---
+
+## 📌 Funcionalidades Atuais
+
+- [x] Autenticação
+- [x] Usuário
+- [x] Finanças
+
+---
+
+## 🛠️ Como Rodar o Projeto
+
+### Backend
 
 ```bash
-git  clone  https://github.com/Edgar0bsj/admin-x.git
-cd  adminx
+cd adminx-api
+npm install
+npm run dev
+```
 
+> Configuração necessária `adminx-api\src\config\env.ts`
+
+### Frontend
+
+```bash
+cd adminx-web
+npm install
+npm run dev
+```
+
+> Configuração da porta `adminx-web\services\api.ts`
+
+### ou na pasta Raiz
+
+```bash
 npm run dev:front
 npm run dev:back
 ```
 
-## Licença
+---
 
-    Este projeto está sob a licença MIT.
+## 📌 Observações
+
+Este projeto é de uso pessoal e está em constante evolução. Sinta-se à vontade para sugerir melhorias ou adaptar para suas próprias necessidades.
+
+---
+
+## 📄 Licença
+
+Este projeto está sob a licença MIT.
+
+---
 
 ## Autor
 
