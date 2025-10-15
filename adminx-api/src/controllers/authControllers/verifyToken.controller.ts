@@ -19,15 +19,16 @@ export default async function verifyTokenController(
 ) {
   try {
     const auth = req.headers.authorization as Header;
-    if (!auth) throw new AppError("Token ausente", 400);
+    if (!auth) throw new AppError("Token ausente", 401);
 
     const token = auth.split(" ")[1] as string;
 
     const decoded = jwt.verify(token, env.JWT_SECRET) as JwtPayload;
-    if (!auth) throw new AppError("Token inválido ou expirado", 400);
+    if (!auth) throw new AppError("Token inválido ou expirado", 401);
 
     (req as RequestUser).user = decoded;
-    console.log((req as any).user);
+
+    console.log("[Verificação do token]>> verificado");
     next();
   } catch (err) {
     next(err);

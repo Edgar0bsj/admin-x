@@ -12,6 +12,6 @@ router.post("/register", registerController);
 router.post("/login", loginController);
 
 // Verificar se o token é válido
-router.get("/me", verifyTokenController);
+router.get("/teste", verifyTokenController);
 
 export default router;

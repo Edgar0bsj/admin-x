@@ -1,6 +1,6 @@
 import registerValidation from "../../validation/register.validation.js";
 import type { Request, Response, NextFunction } from "express";
-import userModel from "../../models/userModel.js";
+import userModel from "../../models/users/userModel.js";
 import AppError from "../../errs/appError.js";
 import bcrypt from "bcryptjs";
 

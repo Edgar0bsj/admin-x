@@ -1,6 +1,6 @@
 import type { Request, Response, NextFunction } from "express";
 import loginValidation from "../../validation/login.validation.js";
-import userModel from "../../models/userModel.js";
+import userModel from "../../models/users/userModel.js";
 import AppError from "../../errs/appError.js";
 import env from "../../config/env.js";
 import jwt from "jsonwebtoken";
