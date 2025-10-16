@@ -1,7 +1,7 @@
 import type { Request, Response, NextFunction } from "express";
 import userModel from "../../models/users/userModel.js";
 import AppError from "../../errs/appError.js";
-import userValidation from "../../validation/register.validation.js";
+import userValidation from "../../validation/userValidation/register.validation.js";
 import bcrypt from "bcryptjs";
 
 export default async function updateUserData(

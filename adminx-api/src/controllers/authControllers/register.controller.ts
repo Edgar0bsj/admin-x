@@ -1,4 +1,4 @@
-import registerValidation from "../../validation/register.validation.js";
+import registerValidation from "../../validation/userValidation/register.validation.js";
 import type { Request, Response, NextFunction } from "express";
 import userModel from "../../models/users/userModel.js";
 import AppError from "../../errs/appError.js";

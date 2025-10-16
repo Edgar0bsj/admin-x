@@ -8,6 +8,7 @@ export default async function getUserData(
   next: NextFunction
 ) {
   try {
+    console.log((req as any).user);
     const { id } = req.params;
     if (!id) throw new AppError("id ausente", 400);
 

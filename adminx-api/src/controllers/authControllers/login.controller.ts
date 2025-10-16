@@ -1,5 +1,5 @@
 import type { Request, Response, NextFunction } from "express";
-import loginValidation from "../../validation/login.validation.js";
+import loginValidation from "../../validation/userValidation/login.validation.js";
 import userModel from "../../models/users/userModel.js";
 import AppError from "../../errs/appError.js";
 import env from "../../config/env.js";
@@ -18,16 +18,20 @@ export default async function loginController(
 
     const user = loginValidation.parse({ email, password });
 
-    const _user = await userModel.find({ email: user.email });
-    if (!_user[0]) throw new AppError("Usuario não encontrado", 400);
+    const _user = await userModel.findOne({ email: user.email });
+    if (!_user) throw new AppError("Usuario não encontrado", 400);
 
     const validatingHash: boolean = await bcrypt.compare(
       user.password,
-      _user[0].passwordHash
+      _user.passwordHash
     );
     if (!validatingHash) throw new AppError("Credenciais inválidas", 400);
 
-    const token = jwt.sign({ email }, env.JWT_SECRET, { expiresIn: "1h" });
+    const userId = _user._id;
+
+    const token = jwt.sign({ id: userId, email }, env.JWT_SECRET, {
+      expiresIn: "1h",
+    });
 
     res.status(200).json({ token });
   } catch (err) {
