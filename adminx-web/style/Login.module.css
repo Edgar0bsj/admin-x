@@ -1,0 +1,360 @@
+/* Container principal da página de autenticação */
+.authContainer {
+  min-height: 100vh;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+  padding: 20px;
+  font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", "Roboto", "Oxygen",
+    "Ubuntu", "Cantarell", "Fira Sans", "Droid Sans", "Helvetica Neue",
+    sans-serif;
+}
+
+/* Card principal do formulário */
+.authCard {
+  background: rgba(255, 255, 255, 0.95);
+  backdrop-filter: blur(10px);
+  border-radius: 20px;
+  padding: 40px;
+  box-shadow: 0 20px 40px rgba(0, 0, 0, 0.1);
+  width: 100%;
+  max-width: 420px;
+  border: 1px solid rgba(255, 255, 255, 0.2);
+  transition: transform 0.3s ease, box-shadow 0.3s ease;
+}
+
+.authCard:hover {
+  transform: translateY(-2px);
+  box-shadow: 0 25px 50px rgba(0, 0, 0, 0.15);
+}
+
+/* Cabeçalho do formulário */
+.authHeader {
+  text-align: center;
+  margin-bottom: 32px;
+}
+
+.authTitle {
+  font-size: 28px;
+  font-weight: 700;
+  color: #2d3748;
+  margin: 0 0 8px 0;
+  line-height: 1.2;
+}
+
+.authSubtitle {
+  font-size: 16px;
+  color: #718096;
+  margin: 0;
+  line-height: 1.5;
+}
+
+/* Formulário */
+.authForm {
+  display: flex;
+  flex-direction: column;
+  gap: 20px;
+}
+
+/* Grupos de formulário */
+.formGroup {
+  display: flex;
+  flex-direction: column;
+  gap: 8px;
+}
+
+.formLabel {
+  font-size: 14px;
+  font-weight: 600;
+  color: #4a5568;
+  margin: 0;
+}
+
+.formInput {
+  padding: 12px 16px;
+  border: 2px solid #e2e8f0;
+  border-radius: 10px;
+  font-size: 16px;
+  transition: all 0.3s ease;
+  background: white;
+  outline: none;
+}
+
+.formInput:focus {
+  border-color: #667eea;
+  box-shadow: 0 0 0 3px rgba(102, 126, 234, 0.1);
+}
+
+.formInput::placeholder {
+  color: #a0aec0;
+}
+
+.formInput:disabled {
+  background: #f7fafc;
+  cursor: not-allowed;
+  opacity: 0.7;
+}
+
+.formInput.error {
+  border-color: #e53e3e;
+  box-shadow: 0 0 0 3px rgba(229, 62, 62, 0.1);
+}
+
+/* Mensagens de erro */
+.errorMessage {
+  font-size: 13px;
+  color: #e53e3e;
+  margin: 0;
+  font-weight: 500;
+}
+
+/* Esqueceu a senha */
+.forgotPassword {
+  text-align: right;
+  margin-top: -8px;
+}
+
+.forgotPasswordLink {
+  background: none;
+  border: none;
+  color: #667eea;
+  font-size: 14px;
+  font-weight: 500;
+  cursor: pointer;
+  text-decoration: none;
+  transition: color 0.2s ease;
+  padding: 0;
+}
+
+.forgotPasswordLink:hover:not(:disabled) {
+  color: #5a67d8;
+  text-decoration: underline;
+}
+
+.forgotPasswordLink:disabled {
+  opacity: 0.5;
+  cursor: not-allowed;
+}
+
+/* Botão de submit */
+.submitButton {
+  background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+  color: white;
+  border: none;
+  border-radius: 10px;
+  padding: 14px 24px;
+  font-size: 16px;
+  font-weight: 600;
+  cursor: pointer;
+  transition: all 0.3s ease;
+  margin-top: 8px;
+  position: relative;
+  overflow: hidden;
+}
+
+.submitButton:hover:not(:disabled) {
+  transform: translateY(-1px);
+  box-shadow: 0 10px 20px rgba(102, 126, 234, 0.3);
+}
+
+.submitButton:active:not(:disabled) {
+  transform: translateY(0);
+}
+
+.submitButton:disabled {
+  opacity: 0.7;
+  cursor: not-allowed;
+  transform: none;
+}
+
+.submitButton.loading {
+  color: transparent;
+}
+
+/* Spinner de carregamento */
+.spinner {
+  position: absolute;
+  top: 50%;
+  left: 50%;
+  transform: translate(-50%, -50%);
+  width: 20px;
+  height: 20px;
+  border: 2px solid rgba(255, 255, 255, 0.3);
+  border-top: 2px solid white;
+  border-radius: 50%;
+  animation: spin 1s linear infinite;
+}
+
+@keyframes spin {
+  0% {
+    transform: translate(-50%, -50%) rotate(0deg);
+  }
+  100% {
+    transform: translate(-50%, -50%) rotate(360deg);
+  }
+}
+
+/* Alternar entre login e registro */
+.toggleForm {
+  text-align: center;
+  margin-top: 24px;
+  padding-top: 24px;
+  border-top: 1px solid #e2e8f0;
+}
+
+.toggleText {
+  font-size: 14px;
+  color: #718096;
+  margin-right: 8px;
+}
+
+.toggleButton {
+  background: none;
+  border: none;
+  color: #667eea;
+  font-size: 14px;
+  font-weight: 600;
+  cursor: pointer;
+  text-decoration: none;
+  transition: color 0.2s ease;
+  padding: 0;
+}
+
+.toggleButton:hover:not(:disabled) {
+  color: #5a67d8;
+  text-decoration: underline;
+}
+
+.toggleButton:disabled {
+  opacity: 0.5;
+  cursor: not-allowed;
+}
+
+/* Responsividade para tablets */
+@media (max-width: 768px) {
+  .authContainer {
+    padding: 16px;
+  }
+
+  .authCard {
+    padding: 32px 24px;
+    max-width: 380px;
+  }
+
+  .authTitle {
+    font-size: 26px;
+  }
+
+  .authSubtitle {
+    font-size: 15px;
+  }
+}
+
+/* Responsividade para mobile */
+@media (max-width: 480px) {
+  .authContainer {
+    padding: 12px;
+  }
+
+  .authCard {
+    padding: 24px 20px;
+    max-width: 100%;
+    border-radius: 16px;
+  }
+
+  .authTitle {
+    font-size: 24px;
+  }
+
+  .authSubtitle {
+    font-size: 14px;
+  }
+
+  .formInput {
+    padding: 14px 16px;
+    font-size: 16px; /* Evita zoom em iOS */
+  }
+
+  .submitButton {
+    padding: 16px 24px;
+    font-size: 16px;
+  }
+
+  .toggleForm {
+    margin-top: 20px;
+    padding-top: 20px;
+  }
+}
+
+/* Animações de entrada */
+@keyframes slideInUp {
+  from {
+    opacity: 0;
+    transform: translateY(30px);
+  }
+  to {
+    opacity: 1;
+    transform: translateY(0);
+  }
+}
+
+.authCard {
+  animation: slideInUp 0.6s ease-out;
+}
+
+/* Foco acessibilidade */
+.formInput:focus-visible {
+  outline: 2px solid #667eea;
+  outline-offset: 2px;
+}
+
+.submitButton:focus-visible,
+.toggleButton:focus-visible,
+.forgotPasswordLink:focus-visible {
+  outline: 2px solid #667eea;
+  outline-offset: 2px;
+  border-radius: 4px;
+}
+
+/* Tema escuro (opcional) */
+@media (prefers-color-scheme: dark) {
+  .authContainer {
+    background: linear-gradient(135deg, #2d3748 0%, #1a202c 100%);
+  }
+
+  .authCard {
+    background: rgba(45, 55, 72, 0.95);
+    border: 1px solid rgba(255, 255, 255, 0.1);
+  }
+
+  .authTitle {
+    color: #f7fafc;
+  }
+
+  .authSubtitle {
+    color: #cbd5e0;
+  }
+
+  .formLabel {
+    color: #e2e8f0;
+  }
+
+  .formInput {
+    background: #2d3748;
+    border-color: #4a5568;
+    color: #f7fafc;
+  }
+
+  .formInput::placeholder {
+    color: #718096;
+  }
+
+  .toggleText {
+    color: #cbd5e0;
+  }
+
+  .toggleForm {
+    border-top-color: #4a5568;
+  }
+}
