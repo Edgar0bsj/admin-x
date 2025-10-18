@@ -1,3 +1,12 @@
+/* {
+  font-size: 1.5rem;
+  font-weight: 700;
+  background: linear-gradient(135deg, #64ffda 0%, #00bcd4 100%);
+  -webkit-background-clip: text;
+  -webkit-text-fill-color: transparent;
+  background-clip: text;
+} */
+
 /* Container principal da página */
 .mainContainer {
   min-height: 100vh;
@@ -23,7 +32,7 @@
 .pageTitle {
   font-size: 48px;
   font-weight: 800;
-  color: #2d3748;
+  color: #482f2d;
   margin: 0 0 16px 0;
   background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
   -webkit-background-clip: text;
@@ -582,7 +591,7 @@
   }
 
   .pageTitle {
-    background: linear-gradient(135deg, #9f7aea 0%, #667eea 100%);
+    background: linear-gradient(135deg, #64ffda 0%, #00bcd4 100%);
     -webkit-background-clip: text;
     -webkit-text-fill-color: transparent;
     background-clip: text;

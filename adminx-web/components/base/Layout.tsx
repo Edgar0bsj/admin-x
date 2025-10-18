@@ -1,6 +1,7 @@
 "use client";
 import { useState, useEffect } from "react";
 import styles from "@/style/Home.module.css";
+import Navbar from "./Navbar";
 
 export default function layout({
   children,
@@ -37,56 +38,7 @@ export default function layout({
   return (
     <div className={styles.pageContainer}>
       {/* Navbar */}
-      <nav className={`${styles.navbar} ${isScrolled ? styles.scrolled : ""}`}>
-        <div className={styles.navContainer}>
-          <div className={styles.navLogo}>
-            <h1>Admin X</h1>
-          </div>
-
-          {/* Desktop Menu */}
-          <ul className={styles.navMenu}>
-            <li>
-              <button
-                onClick={() => scrollToSection("home")}
-                className={styles.navLink}
-              >
-                Sair
-              </button>
-            </li>
-          </ul>
-
-          {/* Mobile Menu Button */}
-          <button
-            className={styles.mobileMenuButton}
-            onClick={toggleMobileMenu}
-            aria-label="Toggle mobile menu"
-          >
-            <span
-              className={`${styles.hamburger} ${
-                isMobileMenuOpen ? styles.active : ""
-              }`}
-            ></span>
-          </button>
-        </div>
-
-        {/* Mobile Menu */}
-        <div
-          className={`${styles.mobileMenu} ${
-            isMobileMenuOpen ? styles.open : ""
-          }`}
-        >
-          <ul className={styles.mobileMenuList}>
-            <li>
-              <button
-                onClick={() => scrollToSection("home")}
-                className={styles.mobileNavLink}
-              >
-                Sair
-              </button>
-            </li>
-          </ul>
-        </div>
-      </nav>
+      <Navbar />
       {/* HERO */}
       {children}
       {/* ====== */}
