@@ -66,7 +66,15 @@ export default function Navbar() {
 
           {/* Botão CTA */}
           <div className={styles.navCta}>
-            <button className={styles.ctaButton}>Sair</button>
+            <button
+              className={styles.ctaButton}
+              onClick={() => {
+                localStorage.removeItem("token");
+                return router.push("/login");
+              }}
+            >
+              Sair
+            </button>
           </div>
 
           {/* Botão hamburger para mobile */}
@@ -107,7 +115,11 @@ export default function Navbar() {
             <li className={styles.mobileNavItem}>
               <button
                 className={styles.mobileCtaButton}
-                onClick={closeMobileMenu}
+                onClick={() => {
+                  localStorage.removeItem("token");
+                  setIsMobileMenuOpen(false);
+                  return router.push("/login");
+                }}
               >
                 Sair
               </button>

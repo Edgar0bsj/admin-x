@@ -3,15 +3,16 @@
 import React, { useState, useEffect } from "react";
 import styles from "@/style/Financer.module.css";
 import Layout from "@/components/base/Layout";
+import useAuthGuard from "@/services/hooks/useAuthGuard";
 
 /**
- * Tipos de dados para o sistema de controle de gastos
+ * Interfaces
  */
 interface Account {
   id: string;
   name: string;
   balance: number;
-  type: "checking" | "savings" | "credit";
+  type: "Crédito" | "Débito";
   createdAt: string;
 }
 
@@ -47,12 +48,14 @@ interface Budget {
  * Componente principal do sistema de controle de gastos
  * Gerencia todas as operações CRUD para contas, categorias, transações e orçamentos
  */
-const ExpenseTracker = () => {
-  // Estados para gerenciar dados
+export default function financer() {
+  // constantes e estados
+  const authGuard = useAuthGuard();
   const [accounts, setAccounts] = useState<Account[]>([]);
   const [categories, setCategories] = useState<Category[]>([]);
   const [transactions, setTransactions] = useState<Transaction[]>([]);
   const [budgets, setBudgets] = useState<Budget[]>([]);
+  const [formData, setFormData] = useState<any>({});
 
   // Estados para controlar formulários
   const [activeTab, setActiveTab] = useState<
@@ -61,11 +64,8 @@ const ExpenseTracker = () => {
   const [showForm, setShowForm] = useState(false);
   const [editingItem, setEditingItem] = useState<any>(null);
 
-  // Estados para formulários
-  const [formData, setFormData] = useState<any>({});
-
   /**
-   * Inicializa dados de exemplo ao carregar o componente
+   * Inicializa dados ao carregar o componente
    */
   useEffect(() => {
     // Dados de exemplo para demonstração
@@ -74,14 +74,14 @@ const ExpenseTracker = () => {
         id: "1",
         name: "Conta Corrente",
         balance: 2500.0,
-        type: "checking",
+        type: "Crédito",
         createdAt: "2024-01-01",
       },
       {
         id: "2",
         name: "Poupança",
         balance: 5000.0,
-        type: "savings",
+        type: "Débito",
         createdAt: "2024-01-01",
       },
     ]);
@@ -221,13 +221,16 @@ const ExpenseTracker = () => {
     return accounts.reduce((total, account) => total + account.balance, 0);
   };
 
+  //=================================================================
   return (
     <>
       <Layout>
         <div className={styles.container}>
           {/* Header com estatísticas */}
           <header className={styles.header}>
-            <h1 className={styles.title}>Controle de Gastos</h1>
+            <h1 className={styles.title} style={{ paddingTop: "15vh" }}>
+              Controle de Gastos
+            </h1>
             <div className={styles.stats}>
               <div className={styles.statCard}>
                 <h3>Saldo Total</h3>
@@ -550,6 +553,4 @@ const ExpenseTracker = () => {
       </Layout>
     </>
   );
-};
-
-export default ExpenseTracker;
+}

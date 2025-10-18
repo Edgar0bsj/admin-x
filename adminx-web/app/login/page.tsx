@@ -3,7 +3,6 @@ import { useState } from "react";
 import { useRouter } from "next/navigation";
 import styles from "@/style/Login.module.css";
 import api from "@/services/api";
-import App from "next/app";
 
 // Interface para os dados do formulário
 interface FormData {
@@ -105,8 +104,8 @@ export default function login() {
           password: formData.password,
         });
 
-        if (response.status === 201) router.refresh();
         alert("Registro realizado com sucesso!");
+        if (response.status === 201) return router.push("/login");
       }
       // ========= API LOGIN===============
       if (isLogin) {

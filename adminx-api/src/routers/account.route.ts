@@ -1,6 +1,6 @@
 import { Router } from "express";
 import createNewAccount from "../controllers/accountControllers/createNewAccount.controller.js";
-import verifyToken from "../controllers/authControllers/verifyToken.controller.js";
+import verifyToken from "../controllers/authControllers/verifyToken.middleware.js";
 import listUserAccounts from "../controllers/accountControllers/listUserAccounts.controller.js";
 
 const router = Router();

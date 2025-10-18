@@ -1,8 +1,9 @@
 "use client";
-import React, { useState } from "react";
+import React, { useState, useEffect } from "react";
 import { useRouter } from "next/navigation";
 import styles from "@/style/Menu.module.css";
 import Layout from "@/components/base/Layout";
+import useAuthGuard from "@/services/hooks/useAuthGuard";
 
 // Interface para definir a estrutura dos cards de funcionalidade
 interface FeatureCard {
@@ -37,6 +38,7 @@ const featuresData: FeatureCard[] = [
 // Componente principal da página de cards
 export default function menu() {
   const router = useRouter();
+  const authGuard = useAuthGuard();
   // Estado para controlar a busca/filter
   const [searchTerm, setSearchTerm] = useState<string>("");
 
@@ -110,6 +112,7 @@ export default function menu() {
     </div>
   );
 
+  // =======================================================================
   return (
     <>
       <Layout>

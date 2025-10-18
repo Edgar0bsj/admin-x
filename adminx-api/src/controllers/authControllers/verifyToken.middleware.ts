@@ -4,7 +4,7 @@ import jwt from "jsonwebtoken";
 import env from "../../config/env.js";
 import AppError from "../../errs/appError.js";
 
-export default async function verifyTokenController(
+export default async function verifyTokenMiddleware(
   req: Request,
   res: Response,
   next: NextFunction
