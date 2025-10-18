@@ -1,6 +1,8 @@
 "use client";
 import { useState } from "react";
+import { useRouter } from "next/navigation";
 import styles from "@/style/Login.module.css";
+import api from "@/services/api";
 
 // Interface para os dados do formulário
 interface FormData {
@@ -11,6 +13,7 @@ interface FormData {
 }
 
 export default function login() {
+  const router = useRouter();
   // Estado para controlar qual formulário está ativo
   const [isLogin, setIsLogin] = useState<boolean>(true);
 
@@ -24,6 +27,7 @@ export default function login() {
 
   // Estado para mensagens de erro
   const [errors, setErrors] = useState<Partial<FormData>>({});
+  const [validation, setValidation] = useState([]);
 
   // Estado para carregamento
   const [isLoading, setIsLoading] = useState<boolean>(false);
@@ -91,18 +95,37 @@ export default function login() {
     setIsLoading(true);
 
     try {
-      // Simulação de requisição para API
       await new Promise((resolve) => setTimeout(resolve, 2000));
+      // ========= API REGISTER===============
+      if (!isLogin) {
+        const response = await api.post("/auth/register", {
+          name: formData.name,
+          email: formData.email,
+          password: formData.password,
+        });
 
-      // Aqui você faria a chamada real para sua API
-      console.log(isLogin ? "Login:" : "Registro:", formData);
+        alert("Registro realizado com sucesso!");
+        if (response.status === 201) return router.push("/login");
+      }
+      // ========= API LOGIN===============
+      if (isLogin) {
+        const response = await api.post("/auth/login", {
+          email: formData.email,
+          password: formData.password,
+        });
 
-      // Simulação de sucesso
-      alert(
-        isLogin
-          ? "Login realizado com sucesso!"
-          : "Registro realizado com sucesso!"
-      );
+        type DataRes = { data: { token?: string } };
+
+        const dataToken = response as DataRes;
+
+        if (!dataToken.data.token) throw new Error("Token Ausente!");
+
+        localStorage.setItem("token", dataToken.data.token);
+        setTimeout(() => {
+          alert("Login realizado com sucesso!");
+          router.push("/menu");
+        }, 1500);
+      }
 
       // Limpar formulário
       setFormData({
@@ -112,7 +135,9 @@ export default function login() {
         confirmPassword: "",
       });
     } catch (error) {
-      console.error("Erro:", error);
+      if ("response" in (error as any) && error != null) {
+        setValidation((error as any).response.data.error.message);
+      }
       alert("Ocorreu um erro. Tente novamente.");
     } finally {
       setIsLoading(false);
@@ -148,6 +173,9 @@ export default function login() {
 
         {/* Formulário */}
         <form className={styles.authForm} onSubmit={handleSubmit}>
+          {validation.length > 0 && (
+            <span className={styles.errorMessage}>{...validation}</span>
+          )}
           {/* Campo Nome (apenas no registro) */}
           {!isLogin && (
             <div className={styles.formGroup}>

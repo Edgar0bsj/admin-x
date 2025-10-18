@@ -1,0 +1,685 @@
+/* ========================================
+   CSS MODULE - SISTEMA DE CONTROLE DE GASTOS
+   ======================================== */
+
+/* Reset e configurações base - usando :global para seletores globais */
+:global(*) {
+  margin: 0;
+  padding: 0;
+  box-sizing: border-box;
+}
+
+/* Container principal */
+.container {
+  min-height: 100vh;
+  background: linear-gradient(135deg, #0f0f23 0%, #1a1a2e 50%, #16213e 100%);
+  color: #ffffff;
+  font-family: "Inter", -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto,
+    sans-serif;
+  padding: 2rem;
+}
+
+/* ========================================
+   HEADER E ESTATÍSTICAS
+   ======================================== */
+
+.header {
+  background: rgba(15, 15, 35, 0.95);
+  backdrop-filter: blur(20px);
+  border-radius: 20px;
+  padding: 2rem;
+  margin-bottom: 2rem;
+  box-shadow: 0 8px 32px rgba(0, 0, 0, 0.3);
+  border: 1px solid rgba(100, 255, 218, 0.2);
+}
+
+.title {
+  font-size: 2.5rem;
+  font-weight: 800;
+  margin-bottom: 2rem;
+  background: linear-gradient(135deg, #64ffda 0%, #00bcd4 100%);
+  -webkit-background-clip: text;
+  -webkit-text-fill-color: transparent;
+  background-clip: text;
+  text-align: center;
+}
+
+.stats {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
+  gap: 1.5rem;
+}
+
+.statCard {
+  background: rgba(15, 15, 35, 0.8);
+  padding: 1.5rem;
+  border-radius: 15px;
+  text-align: center;
+  box-shadow: 0 4px 15px rgba(0, 0, 0, 0.3);
+  border: 1px solid rgba(100, 255, 218, 0.2);
+  transition: transform 0.3s ease;
+}
+
+.statCard:hover {
+  transform: translateY(-5px);
+}
+
+.statCard h3 {
+  font-size: 0.9rem;
+  color: #b0b0b0;
+  margin-bottom: 0.5rem;
+  text-transform: uppercase;
+  letter-spacing: 1px;
+}
+
+.statValue {
+  font-size: 1.8rem;
+  font-weight: 700;
+  color: #64ffda;
+}
+
+/* ========================================
+   NAVEGAÇÃO POR ABAS
+   ======================================== */
+
+.tabNavigation {
+  display: flex;
+  background: rgba(15, 15, 35, 0.9);
+  border-radius: 15px;
+  padding: 0.5rem;
+  margin-bottom: 2rem;
+  box-shadow: 0 4px 15px rgba(0, 0, 0, 0.3);
+  border: 1px solid rgba(100, 255, 218, 0.2);
+  overflow-x: auto;
+}
+
+.tabButton {
+  flex: 1;
+  padding: 1rem 1.5rem;
+  border: none;
+  background: transparent;
+  color: #b0b0b0;
+  font-weight: 600;
+  border-radius: 10px;
+  cursor: pointer;
+  transition: all 0.3s ease;
+  white-space: nowrap;
+  min-width: 150px;
+}
+
+.tabButton:hover {
+  background: rgba(100, 255, 218, 0.1);
+  color: #64ffda;
+}
+
+.tabButton.active {
+  background: linear-gradient(135deg, #64ffda 0%, #00bcd4 100%);
+  color: #0f0f23;
+  box-shadow: 0 4px 15px rgba(100, 255, 218, 0.3);
+}
+
+/* ========================================
+   CONTEÚDO PRINCIPAL
+   ======================================== */
+
+.mainContent {
+  background: rgba(15, 15, 35, 0.95);
+  border-radius: 20px;
+  padding: 2rem;
+  box-shadow: 0 8px 32px rgba(0, 0, 0, 0.3);
+  border: 1px solid rgba(100, 255, 218, 0.2);
+}
+
+.actionBar {
+  display: flex;
+  justify-content: flex-end;
+  margin-bottom: 2rem;
+}
+
+.addButton {
+  background: linear-gradient(135deg, #64ffda 0%, #00bcd4 100%);
+  color: #0f0f23;
+  border: none;
+  padding: 1rem 2rem;
+  border-radius: 10px;
+  font-weight: 600;
+  cursor: pointer;
+  transition: all 0.3s ease;
+  box-shadow: 0 4px 15px rgba(100, 255, 218, 0.3);
+}
+
+.addButton:hover {
+  transform: translateY(-2px);
+  box-shadow: 0 6px 20px rgba(100, 255, 218, 0.4);
+}
+
+/* ========================================
+   LISTA DE ITENS
+   ======================================== */
+
+.itemsList {
+  min-height: 400px;
+}
+
+.itemsGrid {
+  display: grid;
+  grid-template-columns: repeat(auto-fill, minmax(300px, 1fr));
+  gap: 1.5rem;
+}
+
+.itemCard {
+  background: rgba(15, 15, 35, 0.8);
+  border-radius: 15px;
+  padding: 1.5rem;
+  box-shadow: 0 4px 15px rgba(0, 0, 0, 0.3);
+  transition: all 0.3s ease;
+  border: 1px solid rgba(100, 255, 218, 0.2);
+}
+
+.itemCard:hover {
+  transform: translateY(-5px);
+  box-shadow: 0 8px 25px rgba(0, 0, 0, 0.15);
+}
+
+.itemHeader {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  margin-bottom: 1rem;
+}
+
+.itemHeader h3 {
+  font-size: 1.2rem;
+  font-weight: 700;
+  color: #ffffff;
+}
+
+.accountType,
+.budgetPeriod {
+  background: linear-gradient(135deg, #64ffda 0%, #00bcd4 100%);
+  color: #0f0f23;
+  padding: 0.3rem 0.8rem;
+  border-radius: 20px;
+  font-size: 0.8rem;
+  font-weight: 600;
+  text-transform: capitalize;
+}
+
+.itemContent {
+  margin-bottom: 1.5rem;
+}
+
+.balance {
+  font-size: 1.5rem;
+  font-weight: 700;
+  color: #64ffda;
+  margin-bottom: 0.5rem;
+}
+
+.date {
+  font-size: 0.9rem;
+  color: #b0b0b0;
+}
+
+.categoryIcon {
+  font-size: 1.5rem;
+  margin-right: 0.5rem;
+}
+
+.categoryColor {
+  width: 20px;
+  height: 20px;
+  border-radius: 50%;
+  display: inline-block;
+  margin-right: 0.5rem;
+}
+
+.categoryType {
+  font-size: 0.9rem;
+  color: #b0b0b0;
+  text-transform: capitalize;
+}
+
+/* ========================================
+   TRANSAÇÕES
+   ======================================== */
+
+.transactionsList {
+  display: flex;
+  flex-direction: column;
+  gap: 1rem;
+}
+
+.transactionItem {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  background: rgba(15, 15, 35, 0.8);
+  padding: 1.5rem;
+  border-radius: 15px;
+  box-shadow: 0 4px 15px rgba(0, 0, 0, 0.3);
+  border: 1px solid rgba(100, 255, 218, 0.2);
+  transition: all 0.3s ease;
+}
+
+.transactionItem:hover {
+  transform: translateX(5px);
+  box-shadow: 0 6px 20px rgba(0, 0, 0, 0.15);
+}
+
+.transactionInfo h4 {
+  font-size: 1.1rem;
+  font-weight: 600;
+  color: #ffffff;
+  margin-bottom: 0.3rem;
+}
+
+.transactionDate {
+  font-size: 0.9rem;
+  color: #b0b0b0;
+}
+
+.transactionAmount {
+  font-size: 1.2rem;
+  font-weight: 700;
+}
+
+.income {
+  color: #64ffda;
+}
+
+.expense {
+  color: #ff6b6b;
+}
+
+/* ========================================
+   ORÇAMENTOS
+   ======================================== */
+
+.budgetProgress {
+  margin-bottom: 1rem;
+}
+
+.progressBar {
+  width: 100%;
+  height: 8px;
+  background: rgba(100, 255, 218, 0.2);
+  border-radius: 4px;
+  overflow: hidden;
+  margin-bottom: 0.5rem;
+}
+
+.progressFill {
+  height: 100%;
+  background: linear-gradient(135deg, #64ffda 0%, #00bcd4 100%);
+  transition: width 0.3s ease;
+}
+
+/* ========================================
+   AÇÕES DOS ITENS
+   ======================================== */
+
+.itemActions,
+.transactionActions {
+  display: flex;
+  gap: 0.5rem;
+}
+
+.editButton,
+.deleteButton {
+  padding: 0.5rem 1rem;
+  border: none;
+  border-radius: 8px;
+  font-weight: 600;
+  cursor: pointer;
+  transition: all 0.3s ease;
+  font-size: 0.9rem;
+}
+
+.editButton {
+  background: linear-gradient(135deg, #64ffda 0%, #00bcd4 100%);
+  color: #0f0f23;
+}
+
+.editButton:hover {
+  transform: translateY(-2px);
+  box-shadow: 0 4px 15px rgba(100, 255, 218, 0.3);
+}
+
+.deleteButton {
+  background: linear-gradient(135deg, #ff6b6b 0%, #ff5252 100%);
+  color: white;
+}
+
+.deleteButton:hover {
+  transform: translateY(-2px);
+  box-shadow: 0 4px 15px rgba(255, 107, 107, 0.3);
+}
+
+/* ========================================
+   MODAL DE FORMULÁRIO
+   ======================================== */
+
+.modalOverlay {
+  position: fixed;
+  top: 0;
+  left: 0;
+  right: 0;
+  bottom: 0;
+  background: rgba(0, 0, 0, 0.5);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  z-index: 1000;
+  backdrop-filter: blur(5px);
+}
+
+.modal {
+  background: rgba(15, 15, 35, 0.98);
+  border-radius: 20px;
+  width: 90%;
+  max-width: 500px;
+  max-height: 90vh;
+  overflow-y: auto;
+  box-shadow: 0 20px 60px rgba(0, 0, 0, 0.5);
+  border: 1px solid rgba(100, 255, 218, 0.2);
+  animation: modalSlideIn 0.3s ease;
+}
+
+@keyframes modalSlideIn {
+  from {
+    opacity: 0;
+    transform: translateY(-50px);
+  }
+  to {
+    opacity: 1;
+    transform: translateY(0);
+  }
+}
+
+.modalHeader {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  padding: 2rem 2rem 1rem;
+  border-bottom: 1px solid #e9ecef;
+}
+
+.modalHeader h2 {
+  font-size: 1.5rem;
+  font-weight: 700;
+  color: #ffffff;
+}
+
+.closeButton {
+  background: none;
+  border: none;
+  font-size: 2rem;
+  color: #b0b0b0;
+  cursor: pointer;
+  transition: color 0.3s ease;
+}
+
+.closeButton:hover {
+  color: #ff6b6b;
+}
+
+.modalContent {
+  padding: 2rem;
+}
+
+.modalActions {
+  display: flex;
+  justify-content: flex-end;
+  gap: 1rem;
+  padding: 1rem 2rem 2rem;
+  border-top: 1px solid rgba(100, 255, 218, 0.2);
+}
+
+/* ========================================
+   FORMULÁRIOS
+   ======================================== */
+
+.form {
+  display: flex;
+  flex-direction: column;
+  gap: 1.5rem;
+}
+
+.formGroup {
+  display: flex;
+  flex-direction: column;
+  gap: 0.5rem;
+}
+
+.formGroup label {
+  font-weight: 600;
+  color: #ffffff;
+  font-size: 0.9rem;
+}
+
+.formGroup input,
+.formGroup select {
+  padding: 1rem;
+  border: 2px solid rgba(100, 255, 218, 0.3);
+  border-radius: 10px;
+  font-size: 1rem;
+  transition: all 0.3s ease;
+  background: rgba(15, 15, 35, 0.8);
+  color: #ffffff;
+}
+
+.formGroup input:focus,
+.formGroup select:focus {
+  outline: none;
+  border-color: #64ffda;
+  background: rgba(15, 15, 35, 0.9);
+  box-shadow: 0 0 0 3px rgba(100, 255, 218, 0.2);
+}
+
+.cancelButton,
+.saveButton {
+  padding: 1rem 2rem;
+  border: none;
+  border-radius: 10px;
+  font-weight: 600;
+  cursor: pointer;
+  transition: all 0.3s ease;
+}
+
+.cancelButton {
+  background: #6c757d;
+  color: white;
+}
+
+.cancelButton:hover {
+  background: #5a6268;
+  transform: translateY(-2px);
+}
+
+.saveButton {
+  background: linear-gradient(135deg, #64ffda 0%, #00bcd4 100%);
+  color: #0f0f23;
+}
+
+.saveButton:hover {
+  transform: translateY(-2px);
+  box-shadow: 0 6px 20px rgba(100, 255, 218, 0.4);
+}
+
+/* ========================================
+   RESPONSIVE DESIGN
+   ======================================== */
+
+/* Tablet */
+@media (max-width: 768px) {
+  .container {
+    padding: 1rem;
+  }
+
+  .title {
+    font-size: 2rem;
+  }
+
+  .stats {
+    grid-template-columns: 1fr;
+  }
+
+  .tabNavigation {
+    flex-direction: column;
+  }
+
+  .tabButton {
+    min-width: auto;
+  }
+
+  .itemsGrid {
+    grid-template-columns: 1fr;
+  }
+
+  .transactionItem {
+    flex-direction: column;
+    align-items: flex-start;
+    gap: 1rem;
+  }
+
+  .transactionActions {
+    width: 100%;
+    justify-content: flex-end;
+  }
+
+  .modal {
+    width: 95%;
+    margin: 1rem;
+  }
+}
+
+/* Mobile */
+@media (max-width: 480px) {
+  .container {
+    padding: 0.5rem;
+  }
+
+  .header,
+  .mainContent {
+    padding: 1rem;
+  }
+
+  .title {
+    font-size: 1.5rem;
+  }
+
+  .statCard {
+    padding: 1rem;
+  }
+
+  .statValue {
+    font-size: 1.5rem;
+  }
+
+  .itemCard {
+    padding: 1rem;
+  }
+
+  .transactionItem {
+    padding: 1rem;
+  }
+
+  .modalHeader,
+  .modalContent,
+  .modalActions {
+    padding: 1rem;
+  }
+}
+
+/* ========================================
+   ANIMAÇÕES E EFEITOS
+   ======================================== */
+
+/* Animação de entrada para cards */
+.itemCard,
+.transactionItem {
+  animation: fadeInUp 0.5s ease;
+}
+
+@keyframes fadeInUp {
+  from {
+    opacity: 0;
+    transform: translateY(20px);
+  }
+  to {
+    opacity: 1;
+    transform: translateY(0);
+  }
+}
+
+/* Efeito de hover nos botões */
+.addButton,
+.editButton,
+.deleteButton,
+.cancelButton,
+.saveButton {
+  position: relative;
+  overflow: hidden;
+}
+
+.addButton::before,
+.editButton::before,
+.deleteButton::before,
+.cancelButton::before,
+.saveButton::before {
+  content: "";
+  position: absolute;
+  top: 0;
+  left: -100%;
+  width: 100%;
+  height: 100%;
+  background: linear-gradient(
+    90deg,
+    transparent,
+    rgba(255, 255, 255, 0.2),
+    transparent
+  );
+  transition: left 0.5s ease;
+}
+
+.addButton:hover::before,
+.editButton:hover::before,
+.deleteButton:hover::before,
+.cancelButton:hover::before,
+.saveButton:hover::before {
+  left: 100%;
+}
+
+/* ========================================
+   ACESSIBILIDADE
+   ======================================== */
+
+/* Focus states para navegação por teclado */
+.tabButton:focus,
+.addButton:focus,
+.editButton:focus,
+.deleteButton:focus,
+.closeButton:focus,
+.cancelButton:focus,
+.saveButton:focus {
+  outline: 2px solid #64ffda;
+  outline-offset: 2px;
+}
+
+/* Redução de movimento para usuários que preferem */
+@media (prefers-reduced-motion: reduce) {
+  :global(*) {
+    animation-duration: 0.01ms !important;
+    animation-iteration-count: 1 !important;
+    transition-duration: 0.01ms !important;
+  }
+}
+
+/* ========================================
+   SCROLL SUAVE
+   ======================================== */
+
+:global(html) {
+  scroll-behavior: smooth;
+}
