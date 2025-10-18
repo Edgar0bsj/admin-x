@@ -1,6 +1,7 @@
 "use client";
 
-import React, { useState } from "react";
+import { useState } from "react";
+import { useRouter } from "next/navigation";
 import styles from "@/style/Navbar.module.css";
 
 /**
@@ -22,8 +23,11 @@ export default function Navbar() {
    * Função para fechar o menu mobile ao clicar em um link
    */
   const closeMobileMenu = () => {
+    router.push("/menu");
     setIsMobileMenuOpen(false);
   };
+
+  const router = useRouter();
 
   return (
     <>
@@ -32,7 +36,13 @@ export default function Navbar() {
         <div className={styles.navContainer}>
           {/* Logo/Brand */}
           <div className={styles.navBrand}>
-            <a href="#" className={styles.brandLink}>
+            <a
+              href="#"
+              className={styles.brandLink}
+              onClick={() => {
+                router.push("/menu");
+              }}
+            >
               <span className={styles.brandText}>Admin-X</span>
             </a>
           </div>
@@ -40,11 +50,17 @@ export default function Navbar() {
           {/* Menu desktop */}
           <div className={styles.navMenu}>
             <ul className={styles.navList}>
-              {/* <li className={styles.navItem}>
-                <a href="#home" className={styles.navLink}>
-                  Home
+              <li className={styles.navItem}>
+                <a
+                  href="#"
+                  className={styles.navLink}
+                  onClick={() => {
+                    router.push("/menu");
+                  }}
+                >
+                  Painel Principal
                 </a>
-              </li> */}
+              </li>
             </ul>
           </div>
 
@@ -78,15 +94,15 @@ export default function Navbar() {
           }`}
         >
           <ul className={styles.mobileNavList}>
-            {/* <li className={styles.mobileNavItem}>
+            <li className={styles.mobileNavItem}>
               <a
                 href="#home"
                 className={styles.mobileNavLink}
                 onClick={closeMobileMenu}
               >
-                Home
+                Painel Principal
               </a>
-            </li> */}
+            </li>
 
             <li className={styles.mobileNavItem}>
               <button
