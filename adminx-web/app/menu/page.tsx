@@ -23,7 +23,7 @@ interface FeatureCard {
 const featuresData: FeatureCard[] = [
   {
     id: "finances",
-    title: "Finanças",
+    title: "Controle de Gastos",
     description: "Controler financeiro",
     icon: "💸",
     color: "#04c146ff",

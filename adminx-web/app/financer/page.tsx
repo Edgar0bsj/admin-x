@@ -4,15 +4,27 @@ import React, { useState, useEffect } from "react";
 import styles from "@/style/Financer.module.css";
 import Layout from "@/components/base/Layout";
 import useAuthGuard from "@/services/hooks/useAuthGuard";
+import api from "@/services/api";
+import useAddBankAccounts from "@/services/hooks/financer/useAddBankAccounts";
 
 /**
  * Interfaces
  */
+interface ResAccData {
+  _id: string;
+  userId: string;
+  name: string;
+  type: "c" | "d";
+  balance: number;
+  createdAt: string;
+  updatedAt: string;
+}
+
 interface Account {
   id: string;
   name: string;
   balance: number;
-  type: "Crédito" | "Débito";
+  type: "Débito" | "Crédito";
   createdAt: string;
 }
 
@@ -44,13 +56,10 @@ interface Budget {
   endDate: string;
 }
 
-/**
- * Componente principal do sistema de controle de gastos
- * Gerencia todas as operações CRUD para contas, categorias, transações e orçamentos
- */
 export default function financer() {
-  // constantes e estados
-  const authGuard = useAuthGuard();
+  useAuthGuard();
+
+  // Estados principais
   const [accounts, setAccounts] = useState<Account[]>([]);
   const [categories, setCategories] = useState<Category[]>([]);
   const [transactions, setTransactions] = useState<Transaction[]>([]);
@@ -65,27 +74,59 @@ export default function financer() {
   const [editingItem, setEditingItem] = useState<any>(null);
 
   /**
+   * Formata data para exibição visual
+   */
+  const formatDate = (dateString: string) => {
+    try {
+      const date = new Date(dateString);
+      return date.toLocaleDateString("pt-BR", {
+        day: "2-digit",
+        month: "2-digit",
+        year: "numeric",
+      });
+    } catch (error) {
+      console.error("Erro ao formatar data:", error);
+      return dateString;
+    }
+  };
+
+  /**
+   * Carrega dados das contas da API
+   */
+  const loadAccounts = async () => {
+    try {
+      const token = localStorage.getItem("token");
+      const response = await api.get("/account", {
+        headers: { Authorization: `Bearer ${token}` },
+      });
+
+      const data = response.data as ResAccData[];
+      const accountsData = data.map(
+        (el) =>
+          ({
+            id: el._id,
+            name: el.name,
+            balance: el.balance,
+            type: el.type === "c" ? "Crédito" : "Débito",
+            createdAt: formatDate(el.updatedAt),
+          } as Account)
+      );
+
+      setAccounts(accountsData);
+      console.log(response.data);
+    } catch (error) {
+      console.error("Erro ao carregar contas:", error);
+    }
+  };
+
+  /**
    * Inicializa dados ao carregar o componente
    */
   useEffect(() => {
-    // Dados de exemplo para demonstração
-    setAccounts([
-      {
-        id: "1",
-        name: "Conta Corrente",
-        balance: 2500.0,
-        type: "Crédito",
-        createdAt: "2024-01-01",
-      },
-      {
-        id: "2",
-        name: "Poupança",
-        balance: 5000.0,
-        type: "Débito",
-        createdAt: "2024-01-01",
-      },
-    ]);
+    // Carrega dados da API
+    loadAccounts();
 
+    // EM DESENVOLVIMENTO
     setCategories([
       {
         id: "1",
@@ -110,6 +151,7 @@ export default function financer() {
       },
     ]);
 
+    //EM DESENVOLVIMENTO
     setTransactions([
       {
         id: "1",
@@ -131,6 +173,7 @@ export default function financer() {
       },
     ]);
 
+    //EM DESENVOLVIMENTO
     setBudgets([
       {
         id: "1",
@@ -163,27 +206,62 @@ export default function financer() {
   };
 
   /**
+   * Salva uma nova conta via API
+   */
+  const saveAccount = async (accountData: Account) => {
+    try {
+      const token = localStorage.getItem("token");
+      const response = await api.post(
+        "/account",
+        {
+          name: accountData.name,
+          type: accountData.type,
+          balance: accountData.balance,
+        },
+        {
+          headers: { Authorization: `Bearer ${token}` },
+        }
+      );
+
+      console.log(response.status);
+      return response;
+    } catch (error) {
+      console.error("Erro ao salvar conta:", error);
+      throw error;
+    }
+  };
+
+  /**
    * Função para salvar dados (criar ou editar)
    */
-  const saveData = () => {
+  const saveData = async () => {
     if (activeTab === "accounts") {
       const newAccount: Account = {
         id: editingItem?.id || Date.now().toString(),
         name: formData.name || "",
         balance: parseFloat(formData.balance) || 0,
-        type: formData.type || "checking",
+        type: formData.type || "d",
         createdAt:
           editingItem?.createdAt || new Date().toISOString().split("T")[0],
       };
 
-      if (editingItem) {
-        setAccounts(
-          accounts.map((acc) => (acc.id === editingItem.id ? newAccount : acc))
-        );
-      } else {
-        setAccounts([...accounts, newAccount]);
+      try {
+        await saveAccount(newAccount);
+
+        if (editingItem) {
+          setAccounts(
+            accounts.map((acc) =>
+              acc.id === editingItem.id ? newAccount : acc
+            )
+          );
+        } else {
+          setAccounts([...accounts, newAccount]);
+        }
+      } catch (error) {
+        console.error("Erro ao salvar conta:", error);
       }
     }
+
     // Implementar lógica similar para outras abas
     closeForm();
   };
@@ -304,7 +382,7 @@ export default function financer() {
                   : "Orçamento"}
               </button>
             </div>
-
+            {/* ========================  accounts =========================================== */}
             {/* Lista de itens baseada na aba ativa */}
             <div className={styles.itemsList}>
               {activeTab === "accounts" && (
@@ -529,9 +607,8 @@ export default function financer() {
                             setFormData({ ...formData, type: e.target.value })
                           }
                         >
-                          <option value="checking">Conta Corrente</option>
-                          <option value="savings">Poupança</option>
-                          <option value="credit">Cartão de Crédito</option>
+                          <option value="d">Débito</option>
+                          <option value="c">Crédito</option>
                         </select>
                       </div>
                     </form>

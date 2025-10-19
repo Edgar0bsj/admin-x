@@ -1,6 +1,6 @@
 "use client";
 
-import { useRouter } from "next/navigation"; // App Router usa 'next/navigation'
+import { useRouter } from "next/navigation";
 import { useEffect, useState } from "react";
 import api from "../api";
 
