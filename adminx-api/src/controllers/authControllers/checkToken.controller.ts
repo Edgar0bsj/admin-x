@@ -1,5 +1,5 @@
 import type { Request, Response, NextFunction } from "express";
-import type { iUserReq, iUserPayload } from "../../interface/iUser.js";
+import type { iUserPayload } from "../../interface/iUser.js";
 import jwt from "jsonwebtoken";
 import env from "../../config/env.js";
 import AppError from "../../errs/appError.js";

@@ -31,3 +31,12 @@ export default async function createNewAccount(
     next(err);
   }
 }
+
+/**
+ {
+  "userId": ObjectId,
+  name: string,
+  type: "Crédito" | "Débito", // débito, crédito
+  balance: number,
+}
+ */

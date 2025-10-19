@@ -9,9 +9,8 @@ const accountSchema = new mongoose.Schema(
       require: true,
     },
     name: { type: String, trim: true, require: true },
-    type: { type: String, enum: ["débito", "crédito"], require: true },
+    type: { type: String, enum: ["c", "d"], require: true }, // débito, crédito
     balance: { type: Number, require: true },
-    currency: { type: String, default: "BRL" },
   },
   {
     timestamps: true,
