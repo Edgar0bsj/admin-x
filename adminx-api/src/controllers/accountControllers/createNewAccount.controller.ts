@@ -1,6 +1,6 @@
 import type { Request, Response, NextFunction } from "express";
 import AppError from "../../errs/appError.js";
-import type { iUserReq } from "../../interface/iUser.js";
+import type { iUserPayload } from "../../interface/iUser.js";
 import accountVerify from "../../validation/accountValidation/account.validation.js";
 import accountModel from "../../models/accounts/accountModel.js";
 
@@ -10,7 +10,7 @@ export default async function createNewAccount(
   next: NextFunction
 ) {
   try {
-    const userId = (req as iUserReq).user?.id;
+    const userId = (req as any).user.id;
 
     const { name, type, balance } = req.body;
     if (!name) throw new AppError("Name ausente !", 400);
