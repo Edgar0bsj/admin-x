@@ -22,7 +22,7 @@ interface FeatureCard {
 // Dados mock das funcionalidades do sistema
 const featuresData: FeatureCard[] = [
   {
-    id: "finances",
+    id: "financer",
     title: "Controle de Gastos",
     description: "Controler financeiro",
     icon: "💸",
@@ -66,10 +66,9 @@ export default function menu() {
 
   // Função para lidar com clique no card
   const handleCardClick = (featureId: string): void => {
-    console.log(`Navigating to feature: ${featureId}`);
-    if (featureId === "finances") router.push("/financer");
     // Aqui você implementaria a navegação real
-    // Ex: navigate(`/features/${featureId}`);
+    console.log(`Navigating to feature: ${featureId}`);
+    if (featureId === "financer") router.push(`/${featureId}`);
   };
 
   // Componente Card individual
