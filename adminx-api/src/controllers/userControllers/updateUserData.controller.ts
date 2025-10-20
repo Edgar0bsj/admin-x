@@ -1,7 +1,7 @@
 import type { Request, Response, NextFunction } from "express";
 import userModel from "../../models/users/userModel.js";
 import AppError from "../../errs/appError.js";
-import userValidation from "../../validation/userValidation/register.validation.js";
+// import userValidation from "../../validation/userValidation/register.validation.js";
 import bcrypt from "bcryptjs";
 
 export default async function updateUserData(
@@ -18,15 +18,15 @@ export default async function updateUserData(
     if (!email) throw new AppError("email ausente", 400);
     if (!password) throw new AppError("password ausente", 400);
 
-    const newCredentials = userValidation.parse({ name, email, password });
+    // const newCredentials = userValidation.parse({ name, email, password });
 
-    const passwordHash = await bcrypt.hash(newCredentials.password, 10);
+    // const passwordHash = await bcrypt.hash(newCredentials.password, 10);
 
-    await userModel.findByIdAndUpdate(id, {
-      name: newCredentials.name,
-      email: newCredentials.email,
-      passwordHash,
-    });
+    // await userModel.findByIdAndUpdate(id, {
+    //   name: newCredentials.name,
+    //   email: newCredentials.email,
+    //   passwordHash,
+    // });
 
     res.status(201).json({ success: true });
   } catch (err) {

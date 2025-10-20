@@ -1,5 +1,6 @@
 import type { Request, Response, NextFunction } from "express";
-import loginValidation from "../../validation/userValidation/login.validation.js";
+import { loginSchema } from "../../models/users/userValidation.js";
+import type { LoginInput } from "../../models/users/userValidation.js";
 import userModel from "../../models/users/userModel.js";
 import AppError from "../../errs/appError.js";
 import env from "../../config/env.js";
@@ -16,18 +17,21 @@ export default async function loginController(
     if (!email) throw new AppError("Campo 'Email' é obrigatório", 400);
     if (!password) throw new AppError("Campo 'Senha' é obrigatório", 400);
 
-    const user = loginValidation.parse({ email, password });
+    const user: LoginInput = loginSchema.parse({
+      email,
+      passwordHash: password,
+    });
 
-    const _user = await userModel.findOne({ email: user.email });
-    if (!_user) throw new AppError("Usuario não encontrado", 400);
+    const user_Db = await userModel.findOne({ email: user.email });
+    if (!user_Db) throw new AppError("Usuario não encontrado", 400);
 
-    const validatingHash: boolean = await bcrypt.compare(
-      user.password,
-      _user.passwordHash
+    const verifyHash: boolean = await bcrypt.compare(
+      user.passwordHash,
+      user_Db.passwordHash
     );
-    if (!validatingHash) throw new AppError("Credenciais inválidas", 400);
+    if (!verifyHash) throw new AppError("Credenciais inválidas", 400);
 
-    const userId = _user._id;
+    const userId = user_Db._id;
 
     const token = jwt.sign({ id: userId }, env.JWT_SECRET, {
       expiresIn: "1h",
