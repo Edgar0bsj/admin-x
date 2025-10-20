@@ -1,6 +1,7 @@
 import type { Request, Response, NextFunction } from "express";
 import AppError from "../../errs/appError.js";
 import userModel from "../../models/users/userModel.js";
+import type { userReq } from "../../interface/iUser.js";
 
 export default async function deleteUserAccount(
   req: Request,
@@ -8,8 +9,7 @@ export default async function deleteUserAccount(
   next: NextFunction
 ) {
   try {
-    const { id } = req.params;
-    if (!id) throw new AppError("id ausente", 400);
+    const { id } = (req as userReq).user;
 
     const user = await userModel.findByIdAndDelete(id);
     if (!user) throw new AppError("Usuario não encontrado", 400);

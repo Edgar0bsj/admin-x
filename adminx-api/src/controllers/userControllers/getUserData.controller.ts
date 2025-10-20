@@ -1,4 +1,5 @@
 import type { Request, Response, NextFunction } from "express";
+import type { userReq } from "../../interface/iUser.js";
 import userModel from "../../models/users/userModel.js";
 import AppError from "../../errs/appError.js";
 
@@ -8,10 +9,7 @@ export default async function getUserData(
   next: NextFunction
 ) {
   try {
-    console.log((req as any).user);
-
-    const { id } = (req as any).user;
-    if (!id) throw new AppError("id ausente", 400);
+    const { id } = (req as userReq).user;
 
     const user = await userModel.findById(id).select("-passwordHash");
     if (!user) throw new AppError("Usuário não encontrado", 404);

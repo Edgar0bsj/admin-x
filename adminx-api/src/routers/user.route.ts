@@ -10,9 +10,9 @@ const router = Router();
 router.get("/", verifyToken, getUserData);
 
 // Atualizar dados do usuário
-router.put("/:id", verifyToken, updateUserData);
+router.put("/", verifyToken, updateUserData);
 
 // Deletar conta do usuário
-router.delete("/:id", verifyToken, deleteUserAccount);
+router.delete("/", verifyToken, deleteUserAccount);
 
 export default router;
