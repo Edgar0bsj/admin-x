@@ -1,6 +1,6 @@
 import { Router } from "express";
 import createNewAccount from "../controllers/accountControllers/createNewAccount.controller.js";
-import verifyToken from "../controllers/authControllers/verifyToken.middleware.js";
+import verifyToken from "../controllers/authControllers/verifyToken.controller.js";
 import listUserAccounts from "../controllers/accountControllers/listUserAccounts.controller.js";
 import updateAccount from "../controllers/accountControllers/updateAccount.controller.js";
 import deleteAccount from "../controllers/accountControllers/deleteAccount.controller.js";

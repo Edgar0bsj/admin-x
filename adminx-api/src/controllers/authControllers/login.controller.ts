@@ -29,7 +29,7 @@ export default async function loginController(
 
     const userId = _user._id;
 
-    const token = jwt.sign({ id: userId, email }, env.JWT_SECRET, {
+    const token = jwt.sign({ id: userId }, env.JWT_SECRET, {
       expiresIn: "1h",
     });
 

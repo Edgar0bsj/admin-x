@@ -1,81 +1,46 @@
 # ADMIN-X API RESTful
 
-- [ADMIN-X API RESTful](#admin-x-api-restful)
-  - [**-\> Entidade Base**](#--entidade-base)
-    - [🔐 **Autenticação** (`Auth`)](#-autenticação-auth)
-      - [**• Endpoints**](#-endpoints)
-    - [👤 **Usuário** (`User`)](#-usuário-user)
-      - [**• Endpoints**](#-endpoints-1)
-      - [**• Modelagem**](#-modelagem)
-  - [**-\> Entidade Finance**](#--entidade-finance)
-    - [🏦 **Conta Bancária** (`Account`)](#-conta-bancária-account)
-      - [**• Endpoints**](#-endpoints-2)
-      - [**• Modelagem**](#-modelagem-1)
+- [ADMIN-X API RESTful](#admin-x-api-restful) - [**Autenticação** (`Auth`)](#autenticação-auth) - [**Relações de modelo**](#relações-de-modelo)
 
 ---
 
-## **-> Entidade Base**
+### **Autenticação** (`Auth`)
 
-### 🔐 **Autenticação** (`Auth`)
+| Método     | Rota             | Descrição                     |
+| ---------- | ---------------- | ----------------------------- |
+| POST       | `/auth/register` | Registro de novo usuário      |
+| POST       | `/auth/login`    | Login e geração de token      |
+| Middleware | `verifyToken`    | Verificar se o token é válido |
 
-#### **• Endpoints**
+```mermaid
+sequenceDiagram
+    participant Cliente
+    participant Servidor
+    participant BancoDeDados
 
-| Método | Rota                | Descrição                    |
-| ------ | ------------------- | ---------------------------- |
-| POST   | `/auth/register`    | Registro de novo usuário     |
-| POST   | `/auth/login`       | Login e geração de token     |
-| GET    | `/auth/verifyToken` | Dados do usuário autenticado |
-
----
-
-### 👤 **Usuário** (`User`)
-
-#### **• Endpoints**
-
-| Método | Rota         | Descrição                  |
-| ------ | ------------ | -------------------------- |
-| GET    | `/users/:id` | Obter dados do usuário     |
-| PUT    | `/users/:id` | Atualizar dados do usuário |
-| DELETE | `/users/:id` | Deletar conta do usuário   |
-
-#### **• Modelagem**
-
-```json
-{
-  "_id": ObjectId,
-  "name": "...",
-  "email": "...",
-  "passwordHash": "...",
-  "createdAt": ISODate,
-  "updatedAt": ISODate
-}
+Note right of Cliente: /auth/register
+    Cliente->>+Servidor: (POST) /auth/register<br>{ name, email, password }
+    Servidor->>+BancoDeDados: Salva novo usuário
+    BancoDeDados-->>-Servidor: Ok
+    Servidor-->>-Cliente:Status 201
+	Note right of Cliente: /auth/login
+	Cliente->>+Servidor: (POST) /auth/login<br>{ email, password }
+	Servidor->>+BancoDeDados:Buscar por Email
+	BancoDeDados-->>-Servidor:Usuário
+	Servidor-->>-Cliente:Token
+	Note right of Cliente: middleware<br>verifyToken
+	Cliente->>Servidor:Token
+	Servidor->>Servidor:Verifica o token
+	Servidor->>Servidor:Next Rota
 ```
 
----
+### **Relações de modelo**
 
-## **-> Entidade Finance**
-
-### 🏦 **Conta Bancária** (`Account`)
-
-#### **• Endpoints**
-
-| Método | Rota            | Descrição                |
-| ------ | --------------- | ------------------------ |
-| GET    | `/accounts`     | Listar contas do usuário |
-| POST   | `/accounts`     | Criar nova conta         |
-| PUT    | `/accounts/:id` | Atualizar conta          |
-| DELETE | `/accounts/:id` | Deletar conta            |
-
-#### **• Modelagem**
-
-```ts
-{
-  "_id": ObjectId,
-  "userId": ObjectId,
-  name: string,
-  type: "Crédito" | "Débito", // débito, crédito
-  balance: number,
-  "createdAt": ISODate,
-  "updatedAt": ISODate
-}
+```mermaid
+classDiagram
+    class User{
+        String -> name
+        String -> email
+        String -> password
+    }
 ```

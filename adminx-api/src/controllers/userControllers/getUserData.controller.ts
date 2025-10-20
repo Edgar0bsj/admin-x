@@ -9,7 +9,8 @@ export default async function getUserData(
 ) {
   try {
     console.log((req as any).user);
-    const { id } = req.params;
+
+    const { id } = (req as any).user;
     if (!id) throw new AppError("id ausente", 400);
 
     const user = await userModel.findById(id).select("-passwordHash");
