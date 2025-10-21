@@ -1,7 +1,7 @@
 import type { Request, Response, NextFunction } from "express";
-import AppError from "../../errs/appError.js";
-import accountSchema from "../../validation/accountValidation/account.validation.js";
-import accountModel from "../../models/accounts/accountModel.js";
+import AppError from "../../../errs/appError.js";
+import accountSchema from "../../../models/accounts/accountValidation.js";
+import accountModel from "../../../models/accounts/accountModel.js";
 
 export default async function updateAccount(
   req: Request,
@@ -15,7 +15,7 @@ export default async function updateAccount(
     if (!type) throw new AppError("type ausente!", 400);
     if (!balance) throw new AppError("balance ausente!", 400);
 
-    const account = accountSchema.parse({ name, type, balance });
+    const account = accountSchema.parse({ userId: id, name, type, balance });
 
     await accountModel.findByIdAndUpdate(id, {
       name: account.name,

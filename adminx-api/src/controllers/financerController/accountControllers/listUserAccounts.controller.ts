@@ -1,7 +1,7 @@
 import type { Request, Response, NextFunction } from "express";
-import accountModel from "../../models/accounts/accountModel.js";
+import accountModel from "../../../models/accounts/accountModel.js";
 import mongoose from "mongoose";
-import type { userReq } from "../../interface/iUser.js";
+import type { userReq } from "../../../interface/iUser.js";
 
 export default async function listUserAccounts(
   req: Request,

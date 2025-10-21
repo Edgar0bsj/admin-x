@@ -1,9 +1,9 @@
 import { Router } from "express";
-import createNewAccount from "../controllers/accountControllers/createNewAccount.controller.js";
+import createNewAccount from "../controllers/financerController/accountControllers/createNewAccount.controller.js";
 import verifyToken from "../controllers/authControllers/verifyToken.controller.js";
-import listUserAccounts from "../controllers/accountControllers/listUserAccounts.controller.js";
-import updateAccount from "../controllers/accountControllers/updateAccount.controller.js";
-import deleteAccount from "../controllers/accountControllers/deleteAccount.controller.js";
+import listUserAccounts from "../controllers/financerController/accountControllers/listUserAccounts.controller.js";
+import updateAccount from "../controllers/financerController/accountControllers/updateAccount.controller.js";
+import deleteAccount from "../controllers/financerController/accountControllers/deleteAccount.controller.js";
 
 const router = Router();
 

@@ -1,8 +1,8 @@
 import type { Request, Response, NextFunction } from "express";
-import AppError from "../../errs/appError.js";
-import accountVerify from "../../validation/accountValidation/account.validation.js";
-import accountModel from "../../models/accounts/accountModel.js";
-import type { userReq } from "../../interface/iUser.js";
+import AppError from "../../../errs/appError.js";
+import accountVerify from "../../../models/accounts/accountValidation.js";
+import accountModel from "../../../models/accounts/accountModel.js";
+import type { userReq } from "../../../interface/iUser.js";
 
 export default async function createNewAccount(
   req: Request,
@@ -17,10 +17,10 @@ export default async function createNewAccount(
     if (!type) throw new AppError("Type ausente !", 400);
     if (!balance) throw new AppError("Balance ausente !", 400);
 
-    const account = accountVerify.parse({ name, type, balance });
+    const account = accountVerify.parse({ userId: id, name, type, balance });
 
     await accountModel.create({
-      userId: id,
+      userId: account.userId,
       name: account.name,
       type: account.type,
       balance: account.balance,
