@@ -5,6 +5,9 @@ import listUserAccounts from "../controllers/financerController/accountControlle
 import updateAccount from "../controllers/financerController/accountControllers/updateAccount.controller.js";
 import deleteAccount from "../controllers/financerController/accountControllers/deleteAccount.controller.js";
 import createCategory from "../controllers/financerController/categoryController/createCategory.controller.js";
+import getCategories from "../controllers/financerController/categoryController/getCategories.controller.js";
+import updateCategory from "../controllers/financerController/categoryController/updateCategory.controller.js";
+import deleteCategory from "../controllers/financerController/categoryController/deleteCategory.controller.js";
 
 const router = Router();
 
@@ -12,7 +15,6 @@ const router = Router();
  * 	Account
  */
 
-// 	Listar contas do usuário
 router.get("/account/", verifyToken, listUserAccounts);
 
 router.post("/account/", verifyToken, createNewAccount);
@@ -25,12 +27,12 @@ router.delete("/account/:id", verifyToken, deleteAccount);
  * 	Category
  */
 
-router.get("/category", () => {});
+router.get("/category", verifyToken, getCategories);
 
 router.post("/category", verifyToken, createCategory);
 
-router.put("/category/:id", () => {});
+router.put("/category/:id", verifyToken, updateCategory);
 
-router.delete("/category/:id", () => {});
+router.delete("/category/:id", verifyToken, deleteCategory);
 
 export default router;
