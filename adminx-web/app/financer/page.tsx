@@ -26,6 +26,17 @@ interface Account {
   createdAt: string;
 }
 
+interface ResCategoryData {
+  _id: string;
+  userId: string;
+  name: string;
+  color: string;
+  icon: string;
+  type: "despesa" | "receita";
+  createdAt: string;
+  updatedAt: string;
+}
+
 interface Category {
   id: string;
   name: string;
@@ -92,7 +103,7 @@ export default function financer() {
   const loadAccounts = async () => {
     try {
       const token = localStorage.getItem("token");
-      const response = await api.get("/account/", {
+      const response = await api.get("/financer/account/", {
         headers: { Authorization: `Bearer ${token}` },
       });
 
@@ -116,36 +127,41 @@ export default function financer() {
   };
 
   /**
+   * Carrega dados das categorias da API
+   */
+  const loadCategories = async () => {
+    try {
+      const token = localStorage.getItem("token");
+      const response = await api.get("/financer/category/", {
+        headers: { Authorization: `Bearer ${token}` },
+      });
+
+      const data = response.data as ResCategoryData[];
+      const categoriesData = data.map(
+        (el) =>
+          ({
+            id: el._id,
+            name: el.name,
+            color: el.color,
+            icon: el.icon,
+            type: el.type === "receita" ? "income" : "expense",
+          } as Category)
+      );
+
+      setCategories(categoriesData);
+      console.log(response.data);
+    } catch (error) {
+      console.error("Erro ao carregar categorias:", error);
+    }
+  };
+
+  /**
    * Inicializa dados ao carregar o componente
    */
   useEffect(() => {
     // Carrega dados da API
     loadAccounts();
-
-    // EM DESENVOLVIMENTO
-    setCategories([
-      {
-        id: "1",
-        name: "Alimentação",
-        color: "#FF6B6B",
-        icon: "🍽️",
-        type: "expense",
-      },
-      {
-        id: "2",
-        name: "Salário",
-        color: "#4ECDC4",
-        icon: "💰",
-        type: "income",
-      },
-      {
-        id: "3",
-        name: "Transporte",
-        color: "#45B7D1",
-        icon: "🚗",
-        type: "expense",
-      },
-    ]);
+    loadCategories();
 
     //EM DESENVOLVIMENTO
     setTransactions([
@@ -208,7 +224,7 @@ export default function financer() {
     try {
       const token = localStorage.getItem("token");
       const response = await api.post(
-        "/account/",
+        "/financer/account/",
         {
           name: accountData.name,
           type: accountData.type === "Crédito" ? "c" : "d",
@@ -237,7 +253,7 @@ export default function financer() {
     try {
       const token = localStorage.getItem("token");
       const response = await api.put(
-        `/account/${accountData.id}`,
+        `/financer/account/${accountData.id}`,
         {
           name: accountData.name,
           type: accountData.type === "Crédito" ? "c" : "d",
@@ -265,7 +281,7 @@ export default function financer() {
   const deleteAccount = async (accountId: string) => {
     try {
       const token = localStorage.getItem("token");
-      const response = await api.delete(`/account/${accountId}`, {
+      const response = await api.delete(`/financer/account/${accountId}`, {
         headers: { Authorization: `Bearer ${token}` },
       });
 
@@ -276,6 +292,87 @@ export default function financer() {
       return response;
     } catch (error) {
       console.error("Erro ao deletar conta:", error);
+      throw error;
+    }
+  };
+
+  /**
+   * Salva uma nova categoria via API
+   */
+  const saveCategory = async (categoryData: Category) => {
+    try {
+      const token = localStorage.getItem("token");
+      const response = await api.post(
+        "/financer/category/",
+        {
+          name: categoryData.name,
+          color: categoryData.color,
+          icon: categoryData.icon,
+          type: categoryData.type === "income" ? "receita" : "despesa",
+        },
+        {
+          headers: { Authorization: `Bearer ${token}` },
+        }
+      );
+
+      if (response.status === 201) {
+        console.log("Categoria criada com sucesso");
+        loadCategories();
+      }
+      return response;
+    } catch (error) {
+      console.error("Erro ao salvar categoria:", error);
+      throw error;
+    }
+  };
+
+  /**
+   * Atualiza uma categoria existente via API
+   */
+  const updateCategory = async (categoryData: Category) => {
+    try {
+      const token = localStorage.getItem("token");
+      const response = await api.put(
+        `/financer/category/${categoryData.id}`,
+        {
+          name: categoryData.name,
+          color: categoryData.color,
+          icon: categoryData.icon,
+          type: categoryData.type === "income" ? "receita" : "despesa",
+        },
+        {
+          headers: { Authorization: `Bearer ${token}` },
+        }
+      );
+
+      if (response.status === 201) {
+        console.log("Categoria atualizada com sucesso");
+        loadCategories();
+      }
+      return response;
+    } catch (error) {
+      console.error("Erro ao atualizar categoria:", error);
+      throw error;
+    }
+  };
+
+  /**
+   * Deleta uma categoria via API
+   */
+  const deleteCategory = async (categoryId: string) => {
+    try {
+      const token = localStorage.getItem("token");
+      const response = await api.delete(`/financer/category/${categoryId}`, {
+        headers: { Authorization: `Bearer ${token}` },
+      });
+
+      if (response.status === 204) {
+        console.log("Categoria deletada com sucesso");
+        loadCategories();
+      }
+      return response;
+    } catch (error) {
+      console.error("Erro ao deletar categoria:", error);
       throw error;
     }
   };
@@ -307,6 +404,28 @@ export default function financer() {
       }
     }
 
+    if (activeTab === "categories") {
+      const newCategory: Category = {
+        id: editingItem?.id || Date.now().toString(),
+        name: formData.name || "",
+        color: formData.color || "#FF6B6B",
+        icon: formData.icon || "📝",
+        type: formData.type || "expense",
+      };
+
+      try {
+        if (editingItem) {
+          // Se está editando, usa updateCategory
+          await updateCategory(newCategory);
+        } else {
+          // Se está criando, usa saveCategory
+          await saveCategory(newCategory);
+        }
+      } catch (error) {
+        console.error("Erro ao salvar categoria:", error);
+      }
+    }
+
     // Implementar lógica similar para outras abas
     closeForm();
   };
@@ -320,6 +439,14 @@ export default function financer() {
         await deleteAccount(id);
       } catch (error) {
         console.error("Erro ao deletar conta:", error);
+      }
+    }
+
+    if (activeTab === "categories") {
+      try {
+        await deleteCategory(id);
+      } catch (error) {
+        console.error("Erro ao deletar categoria:", error);
       }
     }
     // Implementar lógica similar para outras abas
@@ -658,6 +785,55 @@ export default function financer() {
                         >
                           <option value="d">Débito</option>
                           <option value="c">Crédito</option>
+                        </select>
+                      </div>
+                    </form>
+                  )}
+
+                  {activeTab === "categories" && (
+                    <form className={styles.form}>
+                      <div className={styles.formGroup}>
+                        <label>Nome da Categoria</label>
+                        <input
+                          type="text"
+                          value={formData.name || ""}
+                          onChange={(e) =>
+                            setFormData({ ...formData, name: e.target.value })
+                          }
+                          placeholder="Ex: Alimentação"
+                        />
+                      </div>
+                      <div className={styles.formGroup}>
+                        <label>Cor</label>
+                        <input
+                          type="color"
+                          value={formData.color || "#FF6B6B"}
+                          onChange={(e) =>
+                            setFormData({ ...formData, color: e.target.value })
+                          }
+                        />
+                      </div>
+                      <div className={styles.formGroup}>
+                        <label>Ícone</label>
+                        <input
+                          type="text"
+                          value={formData.icon || ""}
+                          onChange={(e) =>
+                            setFormData({ ...formData, icon: e.target.value })
+                          }
+                          placeholder="Ex: 🍽️"
+                        />
+                      </div>
+                      <div className={styles.formGroup}>
+                        <label>Tipo</label>
+                        <select
+                          value={formData.type || "expense"}
+                          onChange={(e) =>
+                            setFormData({ ...formData, type: e.target.value })
+                          }
+                        >
+                          <option value="expense">Despesa</option>
+                          <option value="income">Receita</option>
                         </select>
                       </div>
                     </form>
