@@ -20,7 +20,7 @@ export default async function createNewAccount(
     const account = accountVerify.parse({ name, type, balance });
 
     await accountModel.create({
-      id,
+      userId: id,
       name: account.name,
       type: account.type,
       balance: account.balance,

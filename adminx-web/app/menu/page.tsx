@@ -3,7 +3,7 @@ import React, { useState, useEffect } from "react";
 import { useRouter } from "next/navigation";
 import styles from "@/style/Menu.module.css";
 import Layout from "@/components/base/Layout";
-import useAuthGuard from "@/services/hooks/useAuthGuard";
+import api from "@/services/api";
 
 // Interface para definir a estrutura dos cards de funcionalidade
 interface FeatureCard {
@@ -38,7 +38,6 @@ const featuresData: FeatureCard[] = [
 // Componente principal da página de cards
 export default function menu() {
   const router = useRouter();
-  const authGuard = useAuthGuard();
   // Estado para controlar a busca/filter
   const [searchTerm, setSearchTerm] = useState<string>("");
 
@@ -48,10 +47,37 @@ export default function menu() {
   // Estado para controlar o modo de visualização
   const [viewMode, setViewMode] = useState<"grid" | "list">("grid");
 
+  // Verificar autenticação do usuário
+  useEffect(() => {
+    const checkUserAuth = async () => {
+      try {
+        const token = localStorage.getItem("token");
+
+        if (!token) {
+          router.push("/login");
+          return;
+        }
+
+        const response = await api.get("/user/", {
+          headers: { Authorization: `Bearer ${token}` },
+        });
+
+        if (response.status !== 200) {
+          router.push("/login");
+        }
+      } catch (error) {
+        console.error("Erro ao verificar autenticação:", error);
+        router.push("/login");
+      }
+    };
+
+    checkUserAuth();
+  }, [router]);
+
   // Categorias disponíveis
   const categories = [
     { id: "all", name: "Todas", icon: "" },
-    { id: "finances", name: "Finanças", icon: "" },
+    { id: "financer", name: "Finanças", icon: "" },
   ];
 
   // Filtrar cards baseado na busca e categoria

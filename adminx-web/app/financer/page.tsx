@@ -3,9 +3,7 @@
 import React, { useState, useEffect } from "react";
 import styles from "@/style/Financer.module.css";
 import Layout from "@/components/base/Layout";
-import useAuthGuard from "@/services/hooks/useAuthGuard";
 import api from "@/services/api";
-import useAddBankAccounts from "@/services/hooks/financer/useAddBankAccounts";
 
 /**
  * Interfaces
@@ -57,8 +55,6 @@ interface Budget {
 }
 
 export default function financer() {
-  useAuthGuard();
-
   // Estados principais
   const [accounts, setAccounts] = useState<Account[]>([]);
   const [categories, setCategories] = useState<Category[]>([]);
@@ -96,7 +92,7 @@ export default function financer() {
   const loadAccounts = async () => {
     try {
       const token = localStorage.getItem("token");
-      const response = await api.get("/account", {
+      const response = await api.get("/account/", {
         headers: { Authorization: `Bearer ${token}` },
       });
 
@@ -212,10 +208,10 @@ export default function financer() {
     try {
       const token = localStorage.getItem("token");
       const response = await api.post(
-        "/account",
+        "/account/",
         {
           name: accountData.name,
-          type: accountData.type,
+          type: accountData.type === "Crédito" ? "c" : "d",
           balance: accountData.balance,
         },
         {
@@ -223,10 +219,63 @@ export default function financer() {
         }
       );
 
-      console.log(response.status);
+      if (response.status === 201) {
+        console.log("Conta criada com sucesso");
+        loadAccounts();
+      }
       return response;
     } catch (error) {
       console.error("Erro ao salvar conta:", error);
+      throw error;
+    }
+  };
+
+  /**
+   * Atualiza uma conta existente via API
+   */
+  const updateAccount = async (accountData: Account) => {
+    try {
+      const token = localStorage.getItem("token");
+      const response = await api.put(
+        `/account/${accountData.id}`,
+        {
+          name: accountData.name,
+          type: accountData.type === "Crédito" ? "c" : "d",
+          balance: accountData.balance,
+        },
+        {
+          headers: { Authorization: `Bearer ${token}` },
+        }
+      );
+
+      if (response.status === 201) {
+        console.log("Conta atualizada com sucesso");
+        loadAccounts();
+      }
+      return response;
+    } catch (error) {
+      console.error("Erro ao atualizar conta:", error);
+      throw error;
+    }
+  };
+
+  /**
+   * Deleta uma conta via API
+   */
+  const deleteAccount = async (accountId: string) => {
+    try {
+      const token = localStorage.getItem("token");
+      const response = await api.delete(`/account/${accountId}`, {
+        headers: { Authorization: `Bearer ${token}` },
+      });
+
+      if (response.status === 204) {
+        console.log("Conta deletada com sucesso");
+        loadAccounts();
+      }
+      return response;
+    } catch (error) {
+      console.error("Erro ao deletar conta:", error);
       throw error;
     }
   };
@@ -246,16 +295,12 @@ export default function financer() {
       };
 
       try {
-        await saveAccount(newAccount);
-
         if (editingItem) {
-          setAccounts(
-            accounts.map((acc) =>
-              acc.id === editingItem.id ? newAccount : acc
-            )
-          );
+          // Se está editando, usa updateAccount
+          await updateAccount(newAccount);
         } else {
-          setAccounts([...accounts, newAccount]);
+          // Se está criando, usa saveAccount
+          await saveAccount(newAccount);
         }
       } catch (error) {
         console.error("Erro ao salvar conta:", error);
@@ -269,9 +314,13 @@ export default function financer() {
   /**
    * Função para deletar item
    */
-  const deleteItem = (id: string) => {
+  const deleteItem = async (id: string) => {
     if (activeTab === "accounts") {
-      setAccounts(accounts.filter((acc) => acc.id !== id));
+      try {
+        await deleteAccount(id);
+      } catch (error) {
+        console.error("Erro ao deletar conta:", error);
+      }
     }
     // Implementar lógica similar para outras abas
   };
