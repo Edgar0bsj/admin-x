@@ -2,7 +2,7 @@ import type { Request, Response, NextFunction } from "express";
 import { loginSchema } from "../../models/users/userValidation.js";
 import type { LoginInput } from "../../models/users/userValidation.js";
 import userModel from "../../models/users/userModel.js";
-import AppError from "../../errs/appError.js";
+import AppError from "../../server/errs/appError.js";
 import env from "../../config/env.js";
 import jwt from "jsonwebtoken";
 import bcrypt from "bcryptjs";

@@ -1,7 +1,7 @@
 import type { Request, Response, NextFunction } from "express";
 import type { userReq } from "../../interface/iUser.js";
 import userModel from "../../models/users/userModel.js";
-import AppError from "../../errs/appError.js";
+import AppError from "../../server/errs/appError.js";
 
 export default async function getUserData(
   req: Request,

@@ -1,5 +1,5 @@
 import type { Request, Response, NextFunction } from "express";
-import accountModel from "../../../models/accounts/accountModel.js";
+import accountModel from "../../../models/financer/accounts/accountModel.js";
 
 export default async function deleteAccount(
   req: Request,

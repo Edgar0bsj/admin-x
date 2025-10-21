@@ -1,7 +1,7 @@
 import type { Request, Response, NextFunction } from "express";
-import AppError from "../../../errs/appError.js";
-import accountVerify from "../../../models/accounts/accountValidation.js";
-import accountModel from "../../../models/accounts/accountModel.js";
+import AppError from "../../../server/errs/appError.js";
+import accountVerify from "../../../models/financer/accounts/accountValidation.js";
+import accountModel from "../../../models/financer/accounts/accountModel.js";
 import type { userReq } from "../../../interface/iUser.js";
 
 export default async function createNewAccount(

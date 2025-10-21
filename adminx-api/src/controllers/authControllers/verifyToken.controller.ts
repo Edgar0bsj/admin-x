@@ -2,7 +2,7 @@ import type { Request, Response, NextFunction } from "express";
 import type { iUserPayload, userReq } from "../../interface/iUser.js";
 import jwt from "jsonwebtoken";
 import env from "../../config/env.js";
-import AppError from "../../errs/appError.js";
+import AppError from "../../server/errs/appError.js";
 
 export default async function verifyTokenMiddleware(
   req: Request,

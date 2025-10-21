@@ -4,19 +4,33 @@ import verifyToken from "../controllers/authControllers/verifyToken.controller.j
 import listUserAccounts from "../controllers/financerController/accountControllers/listUserAccounts.controller.js";
 import updateAccount from "../controllers/financerController/accountControllers/updateAccount.controller.js";
 import deleteAccount from "../controllers/financerController/accountControllers/deleteAccount.controller.js";
+import createCategory from "../controllers/financerController/categoryController/createCategory.controller.js";
 
 const router = Router();
 
+/**
+ * 	Account
+ */
+
 // 	Listar contas do usuário
-router.get("/", verifyToken, listUserAccounts);
+router.get("/account/", verifyToken, listUserAccounts);
 
-// 	Criar nova conta
-router.post("/", verifyToken, createNewAccount);
+router.post("/account/", verifyToken, createNewAccount);
 
-// 	Atualizar conta
-router.put("/:id", verifyToken, updateAccount);
+router.put("/account/:id", verifyToken, updateAccount);
 
-// 	Deletar conta
-router.delete("/:id", verifyToken, deleteAccount);
+router.delete("/account/:id", verifyToken, deleteAccount);
+
+/**
+ * 	Category
+ */
+
+router.get("/category", () => {});
+
+router.post("/category", verifyToken, createCategory);
+
+router.put("/category/:id", () => {});
+
+router.delete("/category/:id", () => {});
 
 export default router;

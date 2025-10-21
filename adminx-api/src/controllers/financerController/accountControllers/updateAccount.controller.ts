@@ -1,7 +1,7 @@
 import type { Request, Response, NextFunction } from "express";
-import AppError from "../../../errs/appError.js";
-import accountSchema from "../../../models/accounts/accountValidation.js";
-import accountModel from "../../../models/accounts/accountModel.js";
+import AppError from "../../../server/errs/appError.js";
+import accountSchema from "../../../models/financer/accounts/accountValidation.js";
+import accountModel from "../../../models/financer/accounts/accountModel.js";
 
 export default async function updateAccount(
   req: Request,
@@ -17,11 +17,18 @@ export default async function updateAccount(
 
     const account = accountSchema.parse({ userId: id, name, type, balance });
 
-    await accountModel.findByIdAndUpdate(id, {
-      name: account.name,
-      type: account.type,
-      balance: account.balance,
-    });
+    const newAccount = await accountModel.findByIdAndUpdate(
+      id,
+      {
+        name: account.name,
+        type: account.type,
+        balance: account.balance,
+      },
+      { new: true }
+    );
+
+    if (!newAccount) throw new AppError("Conta não encontrada", 400);
+
     res.status(201).end();
   } catch (err) {
     next(err);

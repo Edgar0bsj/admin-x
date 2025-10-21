@@ -1,5 +1,5 @@
 import type { Request, Response, NextFunction } from "express";
-import AppError from "../../errs/appError.js";
+import AppError from "../../server/errs/appError.js";
 import userModel from "../../models/users/userModel.js";
 import type { userReq } from "../../interface/iUser.js";
 
