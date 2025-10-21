@@ -8,6 +8,7 @@ import createCategory from "../controllers/financerController/categoryController
 import getCategories from "../controllers/financerController/categoryController/getCategories.controller.js";
 import updateCategory from "../controllers/financerController/categoryController/updateCategory.controller.js";
 import deleteCategory from "../controllers/financerController/categoryController/deleteCategory.controller.js";
+import createTransaction from "../controllers/financerController/transactionControllers/createTransaction.controller.js";
 
 const router = Router();
 
@@ -34,5 +35,11 @@ router.post("/category", verifyToken, createCategory);
 router.put("/category/:id", verifyToken, updateCategory);
 
 router.delete("/category/:id", verifyToken, deleteCategory);
+
+/**
+ * 	Transaction
+ */
+
+router.post("/transaction", verifyToken, createTransaction);
 
 export default router;
