@@ -38,11 +38,11 @@ Servidor->>Servidor:Next Rota
 
 ### **Usuário** (`User`)
 
-| Método | Rota     | Descrição                  |
-| ------ | -------- | -------------------------- |
-| GET    | `/user`  | Obter dados do usuário     |
-| PUT    | `/user/` | Atualizar dados do usuário |
-| DELETE | `/user/` | Deletar conta do usuário   |
+| Método | Rota    | Descrição                  |
+| ------ | ------- | -------------------------- |
+| GET    | `/user` | Obter dados do usuário     |
+| PUT    | `/user` | Atualizar dados do usuário |
+| DELETE | `/user` | Deletar conta do usuário   |
 
 ---
 

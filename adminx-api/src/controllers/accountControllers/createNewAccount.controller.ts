@@ -1,8 +1,8 @@
 import type { Request, Response, NextFunction } from "express";
 import AppError from "../../errs/appError.js";
-import type { iUserPayload } from "../../interface/iUser.js";
 import accountVerify from "../../validation/accountValidation/account.validation.js";
 import accountModel from "../../models/accounts/accountModel.js";
+import type { userReq } from "../../interface/iUser.js";
 
 export default async function createNewAccount(
   req: Request,
@@ -10,7 +10,7 @@ export default async function createNewAccount(
   next: NextFunction
 ) {
   try {
-    const userId = (req as any).user.id;
+    const { id } = (req as userReq).user;
 
     const { name, type, balance } = req.body;
     if (!name) throw new AppError("Name ausente !", 400);
@@ -20,7 +20,7 @@ export default async function createNewAccount(
     const account = accountVerify.parse({ name, type, balance });
 
     await accountModel.create({
-      userId,
+      id,
       name: account.name,
       type: account.type,
       balance: account.balance,
@@ -31,12 +31,3 @@ export default async function createNewAccount(
     next(err);
   }
 }
-
-/**
- {
-  "userId": ObjectId,
-  name: string,
-  type: "Crédito" | "Débito", // débito, crédito
-  balance: number,
-}
- */

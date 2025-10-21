@@ -4,7 +4,6 @@ import AppError from "../../errs/appError.js";
 import { createUserSchema } from "../../models/users/userValidation.js";
 import bcrypt from "bcryptjs";
 import type { userReq } from "../../interface/iUser.js";
-import { throws } from "assert";
 
 export default async function updateUserData(
   req: Request,
