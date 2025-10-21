@@ -2,6 +2,7 @@
 import { useRouter } from "next/navigation";
 import styles from "@/style/Home.module.css";
 import Layout from "@/components/base/Base";
+import Image from "next/image";
 
 export default function home() {
   const router = useRouter();
@@ -36,7 +37,18 @@ export default function home() {
             </div>
             <div className={styles.heroImage}>
               <div className={styles.heroImagePlaceholder}>
-                <span>Imagem Ilustrativa</span>
+                <Image
+                  src="/assets/adminX.png"
+                  width={500}
+                  height={500}
+                  alt="Admin-X Logo"
+                  priority
+                  style={{
+                    width: "100%",
+                    height: "100%",
+                    objectFit: "cover",
+                  }}
+                />
               </div>
             </div>
           </div>
@@ -66,8 +78,7 @@ export default function home() {
                 <div className={styles.serviceIcon}>💸</div>
                 <h3 className={styles.serviceTitle}>Controle financeiro</h3>
                 <p className={styles.serviceDescription}>
-                  Aplicações web modernas e responsivas com as melhores
-                  tecnologias do mercado.
+                  Gerencie suas despesas com praticidade e clareza.
                 </p>
               </div>
             </div>
@@ -82,11 +93,13 @@ export default function home() {
               <p className={styles.contactText}>
                 Fique à vontade para ver o código
               </p>
-              <button
-                className={`${styles.btn} ${styles.btnPrimary} ${styles.btnLarge}`}
-              >
-                Github
-              </button>
+              <a href="https://github.com/Edgar0bsj/admin-x">
+                <button
+                  className={`${styles.btn} ${styles.btnPrimary} ${styles.btnLarge}`}
+                >
+                  Github
+                </button>
+              </a>
             </div>
           </div>
         </section>
