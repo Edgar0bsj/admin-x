@@ -1,193 +1,624 @@
-# ADMIN-X API RESTful
+# ADMIN-X API RESTfull
 
-- [ADMIN-X API RESTful](#admin-x-api-restful)
-  - [**-\> Entidade Base**](#--entidade-base)
-    - [🔐 **Autenticação** (`Auth`)](#-autenticação-auth)
-      - [**• Endpoints**](#-endpoints)
-    - [👤 **Usuário** (`User`)](#-usuário-user)
-      - [**• Endpoints**](#-endpoints-1)
-      - [**• Modelagem**](#-modelagem)
-  - [**-\> Entidade Finance**](#--entidade-finance)
-    - [🏦 **Conta Bancária** (`Account`)](#-conta-bancária-account)
-      - [**• Endpoints**](#-endpoints-2)
-      - [**• Modelagem**](#-modelagem-1)
-    - [🗂️ **Categoria** (`Category`)](#️-categoria-category)
-      - [**• Endpoints**](#-endpoints-3)
-      - [**• Modelagem**](#-modelagem-2)
-    - [💸 **Transação** (`Transaction`)](#-transação-transaction)
-      - [**• Endpoints**](#-endpoints-4)
-      - [**• Modelagem**](#-modelagem-3)
-    - [📊 **Orçamento** (`Budget`)](#-orçamento-budget)
-      - [**• Endpoints**](#-endpoints-5)
-      - [**• Modelagem**](#-modelagem-4)
-    - [📈 **Relatórios** (`Reports`)](#-relatórios-reports)
-      - [**• Endpoints**](#-endpoints-6)
-
----
-
-## **-> Entidade Base**
-
-### 🔐 **Autenticação** (`Auth`)
-
-#### **• Endpoints**
-
-| Método | Rota                | Descrição                    |
-| ------ | ------------------- | ---------------------------- |
-| POST   | `/auth/register`    | Registro de novo usuário     |
-| POST   | `/auth/login`       | Login e geração de token     |
-| GET    | `/auth/verifyToken` | Dados do usuário autenticado |
+- [ADMIN-X API RESTfull](#admin-x-api-restfull)
+	- [1. **Autenticação (auth)**](#1-autenticação-auth)
+		- [POST `/auth/register`](#post-authregister)
+		- [POST `/auth/login`](#post-authlogin)
+	- [2. **Usuário (user)**](#2-usuário-user)
+		- [GET `/user/`](#get-user)
+		- [PUT `/user/`](#put-user)
+		- [DELETE `/user/`](#delete-user)
+	- [3. **Financeiro (account)**](#3-financeiro-account)
+		- [POST `/financer/account/`](#post-financeraccount)
+		- [PUT `/financer/account/:id`](#put-financeraccountid)
+		- [GET `/financer/account/`](#get-financeraccount)
+		- [DELETE `/financer/account/:id`](#delete-financeraccountid)
+	- [3.1. **Financeiro (category)**](#31-financeiro-category)
+		- [POST `/financer/category/`](#post-financercategory)
+		- [GET `/financer/category/`](#get-financercategory)
+		- [PUT `/financer/category/:id`](#put-financercategoryid)
+		- [DELETE `/financer/category/:id`](#delete-financercategoryid)
+	- [3.2. **Financeiro (transaction)**](#32-financeiro-transaction)
+		- [POST `/financer/transaction/`](#post-financertransaction)
+		- [GET `/financer/transaction/`](#get-financertransaction)
+		- [PUT `/financer/transaction/:id`](#put-financertransactionid)
+		- [DELETE `/financer/transaction/:id`](#delete-financertransactionid)
+	- [3.3. **Financeiro (budget)**](#33-financeiro-budget)
+		- [POST `/financer/budget/`](#post-financerbudget)
+		- [GET `/financer/budget/`](#get-financerbudget)
+		- [PUT `/financer/budget/:id`](#put-financerbudgetid)
+		- [DELETE `/financer/budget/:id`](#delete-financerbudgetid)
+	- [3.4. **Financeiro**](#34-financeiro)
+		- [GET `/financer/transaction/account/:accountId`](#get-financertransactionaccountaccountid)
+		- [GET `/financer/transaction/category/:categoryId`](#get-financertransactioncategorycategoryid)
+		- [GET `/financer/transaction/date-range`](#get-financertransactiondate-range)
+		- [GET `/financer/stats/monthly`](#get-financerstatsmonthly)
 
 ---
 
-### 👤 **Usuário** (`User`)
+## 1. **Autenticação (auth)**
 
-#### **• Endpoints**
+### POST `/auth/register`
 
-| Método | Rota         | Descrição                  |
-| ------ | ------------ | -------------------------- |
-| GET    | `/users/:id` | Obter dados do usuário     |
-| PUT    | `/users/:id` | Atualizar dados do usuário |
-| DELETE | `/users/:id` | Deletar conta do usuário   |
-
-#### **• Modelagem**
+<details> <summary>Exemplo de Entrada</summary>
 
 ```json
 {
-  "_id": ObjectId,
-  "name": "...",
-  "email": "...",
-  "passwordHash": "...",
-  "createdAt": ISODate,
-  "updatedAt": ISODate
+  "name": "Edgar junior",
+  "email": "01.edgarjunior@gmail.com",
+  "password": "321321abc"
 }
 ```
 
----
-
-## **-> Entidade Finance**
-
-### 🏦 **Conta Bancária** (`Account`)
-
-#### **• Endpoints**
-
-| Método | Rota            | Descrição                        |
-| ------ | --------------- | -------------------------------- |
-| GET    | `/accounts`     | Listar contas do usuário         |
-| POST   | `/accounts`     | Criar nova conta                 |
-| GET    | `/accounts/:id` | Detalhes de uma conta específica |
-| PUT    | `/accounts/:id` | Atualizar conta                  |
-| DELETE | `/accounts/:id` | Deletar conta                    |
-
-#### **• Modelagem**
+</details>
+<details> <summary>Exemplo de Saida</summary>
 
 ```json
-{
-  "_id": ObjectId,
-  "userId": ObjectId,
-  "name": "Conta Corrente",
-  "type": "checking", // débito, crédito
-  "balance": 2500.00,
-  "currency": "BRL",
-  "createdAt": ISODate,
-  "updatedAt": ISODate
-}
-
+Created 201
 ```
 
----
+</details>
 
-### 🗂️ **Categoria** (`Category`)
+### POST `/auth/login`
 
-#### **• Endpoints**
-
-| Método | Rota              | Descrição            |
-| ------ | ----------------- | -------------------- |
-| GET    | `/categories`     | Listar categorias    |
-| POST   | `/categories`     | Criar nova categoria |
-| PUT    | `/categories/:id` | Atualizar categoria  |
-| DELETE | `/categories/:id` | Deletar categoria    |
-
-#### **• Modelagem**
+<details> <summary>Exemplo de Entrada</summary>
 
 ```json
 {
-  "_id": ObjectId,
-  "userId": ObjectId,
+  "email": "01.edgarjunior@gmail.com",
+  "password": "321321abc"
+}
+```
+
+</details>
+<details> <summary>Exemplo de Saida</summary>
+
+```json
+{
+  "token": "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpZCI6IjY4ZjcwODU3Nzc4ODhkODI4ZjY5ZDQ1NyIsImlhdCI6MTc2MTA4MjEyMSwiZXhwIjoxNzYxMDg1NzIxfQ.c3s6B9ewwxAgk28uw_coLNU5lkfHlv8HIQ0oBgeEStk"
+}
+```
+
+</details>
+
+---
+
+## 2. **Usuário (user)**
+
+### GET `/user/`
+
+<details> <summary>Exemplo de Entrada</summary>
+
+```json
+Nenhuma (apenas headers de autorização)
+```
+
+</details>
+<details> <summary>Exemplo de Saida</summary>
+
+```json
+{
+  "_id": "68f7085777867d828f69u457",
+  "name": "edgar junior",
+  "email": "01.edgarjunior@gmail.com",
+  "createdAt": "2025-10-21T04:13:11.023Z",
+  "updatedAt": "2025-10-21T04:13:11.023Z"
+}
+```
+
+</details>
+
+### PUT `/user/`
+
+<details> <summary>Exemplo de Entrada</summary>
+
+```json
+{
+  "name": "nome atualizado",
+  "email": "01.edgarjunior@gmail.com",
+  "password": "123123"
+}
+```
+
+</details>
+<details> <summary>Exemplo de Saida</summary>
+
+```json
+Created 201
+```
+
+</details>
+
+### DELETE `/user/`
+
+<details> <summary>Exemplo de Entrada</summary>
+
+```json
+Nenhuma (apenas headers de autorização)
+```
+
+</details>
+<details> <summary>Exemplo de Saida</summary>
+
+```json
+NO CONTANTE 204
+```
+
+</details>
+
+---
+
+## 3. **Financeiro (account)**
+
+### POST `/financer/account/`
+
+<details> <summary>Exemplo de Entrada</summary>
+
+```json
+{
+  "name": "Conta principal",
+  "type": "c", // "c" -> crédito | "d" -> débito
+  "balance": 250
+}
+```
+
+</details>
+<details> <summary>Exemplo de Saida</summary>
+
+```json
+Created 201
+```
+
+</details>
+
+### PUT `/financer/account/:id`
+
+<details> <summary>Exemplo de Entrada</summary>
+
+```json
+{
+  "name": "Conta principal atualizada",
+  "type": "d",
+  "balance": 600
+}
+```
+
+</details>
+<details> <summary>Exemplo de Saida</summary>
+
+```json
+Created 201
+```
+
+</details>
+
+### GET `/financer/account/`
+
+<details> <summary>Exemplo de Entrada</summary>
+
+```json
+Nenhuma (apenas headers de autorização)
+```
+
+</details>
+<details> <summary>Exemplo de Saida</summary>
+
+```json
+[
+  {
+    "_id": "68f71972ebe2a0046e263948",
+    "userId": "68f7085777888d828f69d457",
+    "name": "conta principal",
+    "type": "d",
+    "balance": 700,
+    "createdAt": "2025-10-21T05:26:10.774Z",
+    "updatedAt": "2025-10-21T21:43:39.891Z"
+  },
+  {
+    "_id": "32f71972ebe34a0046e873948",
+    "userId": "68f7085777888d828f69d457",
+    "name": "conta DOIS",
+    "type": "c",
+    "balance": 980,
+    "createdAt": "2025-10-21T05:26:10.774Z",
+    "updatedAt": "2025-10-21T21:43:39.891Z"
+  }
+]
+```
+
+</details>
+
+### DELETE `/financer/account/:id`
+
+<details> <summary>Exemplo de Entrada</summary>
+
+```json
+Nenhuma (apenas headers de autorização)
+```
+
+</details>
+<details> <summary>Exemplo de Saida</summary>
+
+```json
+NO CONTENT 204
+```
+
+</details>
+
+## 3.1. **Financeiro (category)**
+
+### POST `/financer/category/`
+
+<details> <summary>Exemplo de Entrada</summary>
+
+```json
+{
   "name": "Alimentação",
-  "type": "despesa", // despesa, renda
-  "color": "#FF5733",
-  "icon": "shopping-cart"
+  "color": "#FF6B6B",
+  "icon": "🍽️",
+  "type": "despesa" // "despesa" | "receita"
 }
 ```
 
----
+</details>
+<details> <summary>Exemplo de Saida</summary>
 
-### 💸 **Transação** (`Transaction`)
+```json
+Created 201
+```
 
-#### **• Endpoints**
+</details>
 
-| Método | Rota                | Descrição                 |
-| ------ | ------------------- | ------------------------- |
-| GET    | `/transactions`     | Listar transações         |
-| POST   | `/transactions`     | Criar nova transação      |
-| GET    | `/transactions/:id` | Detalhes de uma transação |
-| PUT    | `/transactions/:id` | Atualizar transação       |
-| DELETE | `/transactions/:id` | Deletar transação         |
+### GET `/financer/category/`
 
-#### **• Modelagem**
+<details> <summary>Exemplo de Entrada</summary>
+
+```json
+Nenhuma (apenas headers de autorização)
+```
+
+</details>
+<details> <summary>Exemplo de Saida</summary>
+
+```json
+[
+  {
+    "_id": "68f7d4cea9410f554f72e589",
+    "userId": "68f7085777888d828f69d457",
+    "name": "alimentação",
+    "color": "#000000",
+    "icon": "📝",
+    "type": "receita",
+    "createdAt": "2025-10-21T18:45:34.319Z",
+    "updatedAt": "2025-10-21T18:46:11.317Z"
+  },
+  {
+    "_id": "12f732cea941435554f567589",
+    "userId": "68f7085777888d828f69d457",
+    "name": "alimentação",
+    "color": "#683939ff",
+    "icon": "📝",
+    "type": "despesa",
+    "createdAt": "2025-10-21T18:45:34.319Z",
+    "updatedAt": "2025-10-21T18:46:11.317Z"
+  }
+]
+```
+
+</details>
+
+### PUT `/financer/category/:id`
+
+<details> <summary>Exemplo de Entrada</summary>
 
 ```json
 {
-  "_id": ObjectId,
-  "userId": ObjectId,
-  "accountId": ObjectId,
-  "categoryId": ObjectId,
-  "type": "despesa", // despesa, renda
-  "amount": 150.00,
+  "name": "Mudei o nome",
+  "color": "#FF6B6B",
+  "icon": "🍽️",
+  "type": "despesa"
+}
+```
+
+</details>
+<details> <summary>Exemplo de Saida</summary>
+
+```json
+Created 201
+```
+
+</details>
+
+### DELETE `/financer/category/:id`
+
+<details> <summary>Exemplo de Entrada</summary>
+
+```json
+Nenhuma (apenas headers de autorização)
+```
+
+</details>
+<details> <summary>Exemplo de Saida</summary>
+
+```json
+NO CONTENT 204
+```
+
+</details>
+
+## 3.2. **Financeiro (transaction)**
+
+### POST `/financer/transaction/`
+
+<details> <summary>Exemplo de Entrada</summary>
+
+```json
+{
+  "accountId": "68f71972ebe2a0046e263948",
+  "categoryId": "68f7d4cea9410f554f72e589",
+  "amount": 82,
   "description": "Supermercado",
-  "date": ISODate,
-  "createdAt": ISODate
+  "date": "2024-01-15",
+  "type": "despesa"
 }
-
 ```
 
----
+</details>
+<details> <summary>Exemplo de Saida</summary>
 
-### 📊 **Orçamento** (`Budget`)
+```json
+Created 201
+```
 
-#### **• Endpoints**
+</details>
 
-| Método | Rota           | Descrição            |
-| ------ | -------------- | -------------------- |
-| GET    | `/budgets`     | Listar orçamentos    |
-| POST   | `/budgets`     | Criar novo orçamento |
-| PUT    | `/budgets/:id` | Atualizar orçamento  |
-| DELETE | `/budgets/:id` | Deletar orçamento    |
+### GET `/financer/transaction/`
 
-#### **• Modelagem**
+<details> <summary>Exemplo de Entrada</summary>
+
+```json
+Nenhuma (apenas headers de autorização)
+```
+
+</details>
+<details> <summary>Exemplo de Saida</summary>
+
+```json
+[
+  {
+    "_id": "68f7d376a9410f554f72e57f",
+    "userId": "68f7085777888d828f69d457",
+    "accountId": "68f7085777888d828f69d458",
+    "categoryId": "68f7085777888d828f69d459",
+    "amount": 150.5,
+    "description": "Supermercado",
+    "date": "2024-01-15T00:00:00.000Z",
+    "type": "despesa",
+    "createdAt": "2025-10-21T18:39:50.973Z",
+    "updatedAt": "2025-10-21T18:39:50.973Z"
+  }
+]
+```
+
+</details>
+
+### PUT `/financer/transaction/:id`
+
+<details> <summary>Exemplo de Entrada</summary>
 
 ```json
 {
-  "_id": ObjectId,
-  "userId": ObjectId,
-  "categoryId": ObjectId,
-  "limit": 1000.00,
-  "period": "mensal", // mensal, semanal, anual
-  "startDate": ISODate,
-  "endDate": ISODate
+  "accountId": "68f7085777888d828f69d458",
+  "categoryId": "68f7085777888d828f69d459",
+  "amount": 200.0,
+  "description": "Supermercado - atualizado",
+  "date": "2024-01-15",
+  "type": "despesa"
 }
 ```
 
----
+</details>
+<details> <summary>Exemplo de Saida</summary>
 
-### 📈 **Relatórios** (`Reports`)
+```json
+Status code 201
+```
 
-#### **• Endpoints**
+</details>
 
-| Método | Rota                | Descrição                         |
-| ------ | ------------------- | --------------------------------- |
-| GET    | `/reports/summary`  | Resumo financeiro (entrada/saída) |
-| GET    | `/reports/monthly`  | Relatório mensal                  |
-| GET    | `/reports/category` | Gastos por categoria              |
+### DELETE `/financer/transaction/:id`
 
----
+<details> <summary>Exemplo de Entrada</summary>
+
+```json
+Nenhuma (apenas headers de autorização e ID na URL)
+```
+
+</details>
+<details> <summary>Exemplo de Saida</summary>
+
+```json
+Status code 204
+```
+
+</details>
+
+## 3.3. **Financeiro (budget)**
+
+### POST `/financer/budget/`
+
+<details> <summary>Exemplo de Entrada</summary>
+
+```json
+{
+  "categoryId": "68f7085777888d828f69d459",
+  "amount": 500.0,
+  "period": "monthly",
+  "startDate": "2024-01-01",
+  "endDate": "2024-01-31"
+}
+```
+
+</details>
+<details> <summary>Exemplo de Saida</summary>
+
+```json
+Status code 201
+```
+
+</details>
+
+### GET `/financer/budget/`
+
+<details> <summary>Exemplo de Entrada</summary>
+
+```json
+Nenhuma (apenas headers de autorização)
+```
+
+</details>
+<details> <summary>Exemplo de Saida</summary>
+
+```json
+[
+  {
+    "_id": "68f7d376a9410f554f72e57f",
+    "userId": "68f7085777888d828f69d457",
+    "categoryId": "68f7085777888d828f69d459",
+    "amount": 500.0,
+    "spent": 150.0,
+    "period": "monthly",
+    "startDate": "2024-01-01T00:00:00.000Z",
+    "endDate": "2024-01-31T23:59:59.999Z",
+    "createdAt": "2025-10-21T18:39:50.973Z",
+    "updatedAt": "2025-10-21T18:39:50.973Z"
+  }
+]
+```
+
+</details>
+
+### PUT `/financer/budget/:id`
+
+<details> <summary>Exemplo de Entrada</summary>
+
+```json
+{
+  "categoryId": "68f7085777888d828f69d459",
+  "amount": 600.0,
+  "period": "monthly",
+  "startDate": "2024-01-01",
+  "endDate": "2024-01-31"
+}
+```
+
+</details>
+<details> <summary>Exemplo de Saida</summary>
+
+```json
+Status code 201
+
+```
+
+</details>
+
+### DELETE `/financer/budget/:id`
+
+<details> <summary>Exemplo de Entrada</summary>
+
+```json
+Nenhuma (apenas ID na URL)
+```
+
+</details>
+<details> <summary>Exemplo de Saida</summary>
+
+```json
+Status code 204
+
+```
+
+</details>
+
+## 3.4. **Financeiro**
+
+### GET `/financer/transaction/account/:accountId`
+
+<details> <summary>Exemplo de Entrada</summary>
+
+```json
+ID da conta na URL
+```
+
+</details>
+<details> <summary>Exemplo de Saida</summary>
+
+```json
+Lista de transações filtradas por conta
+
+```
+
+</details>
+
+### GET `/financer/transaction/category/:categoryId`
+
+<details> <summary>Exemplo de Entrada</summary>
+
+```json
+ID da categoria na URL
+```
+
+</details>
+<details> <summary>Exemplo de Saida</summary>
+
+```json
+Lista de transações filtradas por categoria
+```
+
+</details>
+
+### GET `/financer/transaction/date-range`
+
+<details> <summary>Exemplo de Entrada</summary>
+
+```json
+Query params `?startDate=2024-01-01&endDate=2024-01-31`
+```
+
+</details>
+<details> <summary>Exemplo de Saida</summary>
+
+```json
+Lista de transações no período
+```
+
+</details>
+
+### GET `/financer/stats/monthly`
+
+<details> <summary>Exemplo de Entrada</summary>
+
+```json
+Query params `?month=01&year=2024`
+```
+
+</details>
+<details> <summary>Exemplo de Saida</summary>
+
+```json
+{
+  "totalIncome": 3000.0,
+  "totalExpense": 1500.0,
+  "balance": 1500.0,
+  "transactionsCount": 25,
+  "categoriesBreakdown": [
+    {
+      "categoryId": "68f7085777888d828f69d459",
+      "categoryName": "Alimentação",
+      "amount": 500.0
+    }
+  ]
+}
+```
+
+</details>

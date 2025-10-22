@@ -1,7 +1,8 @@
-import registerValidation from "../../validation/userValidation/register.validation.js";
+import { createUserSchema } from "../../models/users/userValidation.js";
+import type { CreateUserInput } from "../../models/users/userValidation.js";
 import type { Request, Response, NextFunction } from "express";
 import userModel from "../../models/users/userModel.js";
-import AppError from "../../errs/appError.js";
+import AppError from "../../server/errs/appError.js";
 import bcrypt from "bcryptjs";
 
 export default async function registerController(
@@ -15,7 +16,7 @@ export default async function registerController(
     if (!email) throw new AppError("Campo 'email' é obrigatório", 400);
     if (!password) throw new AppError("Campo 'password' é obrigatório", 400);
 
-    const user = registerValidation.parse({
+    const user: CreateUserInput = createUserSchema.parse({
       name,
       email,
       password,

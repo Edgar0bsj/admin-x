@@ -1,20 +1,13 @@
 import type { Request } from "express";
-import type { JwtPayload } from "jsonwebtoken";
 
-export interface iUser {
-  id?: string;
-  name?: string;
-  email?: string;
-  passwordHash?: string;
+export interface userReq extends Request {
+  user:
+    | iUserPayload
+    | {
+        id: string;
+      };
 }
 
-export interface iUserReq extends Request {
-  user?: iUser;
-}
-
-export interface iUserPayload extends JwtPayload {
+export interface iUserPayload {
   id?: string;
-  name?: string;
-  email?: string;
-  passwordHash?: string;
 }

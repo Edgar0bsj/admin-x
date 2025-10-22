@@ -1,7 +1,7 @@
 import type { Request, Response, NextFunction } from "express";
-import type { iUserReq } from "../../interface/iUser.js";
-import accountModel from "../../models/accounts/accountModel.js";
+import accountModel from "../../../models/financer/accounts/accountModel.js";
 import mongoose from "mongoose";
+import type { userReq } from "../../../interface/iUser.js";
 
 export default async function listUserAccounts(
   req: Request,
@@ -9,9 +9,9 @@ export default async function listUserAccounts(
   next: NextFunction
 ) {
   try {
-    const _userId = (req as iUserReq).user;
+    const { id } = (req as userReq).user;
 
-    const userObjectId = new mongoose.Types.ObjectId(_userId?.id);
+    const userObjectId = new mongoose.Types.ObjectId(id);
 
     const accounts = await accountModel.find({ userId: userObjectId });
 

@@ -1,8 +1,8 @@
 import type { Request, Response, NextFunction } from "express";
-import type { iUserReq, iUserPayload } from "../../interface/iUser.js";
+import type { iUserPayload, userReq } from "../../interface/iUser.js";
 import jwt from "jsonwebtoken";
 import env from "../../config/env.js";
-import AppError from "../../errs/appError.js";
+import AppError from "../../server/errs/appError.js";
 
 export default async function verifyTokenMiddleware(
   req: Request,
@@ -18,9 +18,9 @@ export default async function verifyTokenMiddleware(
     const decoded = jwt.verify(token, env.JWT_SECRET) as iUserPayload;
     if (!auth) throw new AppError("Token inválido ou expirado", 401);
 
-    (req as iUserReq).user = decoded;
+    console.log("[Token verificado]>> success");
 
-    console.log("[Verificação do token]>> verificado");
+    (req as userReq).user = decoded;
 
     next();
   } catch (err) {
