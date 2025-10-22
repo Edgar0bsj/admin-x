@@ -13,8 +13,7 @@ export default async function getTransaction(
 
     const transaction = await transactionModel.find({ userId });
 
-    if (transaction.length <= 0)
-      throw new AppError("Error ao buscar transações", 400);
+    if (!transaction) throw new AppError("Error ao buscar transações", 400);
 
     res.status(200).json(transaction);
   } catch (err) {
