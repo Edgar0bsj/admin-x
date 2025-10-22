@@ -7,5 +7,18 @@ export interface Account {
   createdAt: string;
   updatedAt: string;
 
-  save(): void;
+  save(): Promise<void>;
+}
+
+export interface Transaction {
+  _id: string;
+  userId: string;
+  accountId: string;
+  categoryId: string;
+  amount: number;
+  description: string;
+  date: string;
+  type: "despesa" | "receita";
+
+  save(): Promise<void>;
 }

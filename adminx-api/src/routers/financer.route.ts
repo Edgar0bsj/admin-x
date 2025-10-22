@@ -10,6 +10,7 @@ import updateCategory from "../controllers/financerController/categoryController
 import deleteCategory from "../controllers/financerController/categoryController/deleteCategory.controller.js";
 import createTransaction from "../controllers/financerController/transactionControllers/createTransaction.controller.js";
 import getTransaction from "../controllers/financerController/transactionControllers/getTransaction.controller.js";
+import updateTransactions from "../controllers/financerController/transactionControllers/updateTransactions.controller.js";
 
 const router = Router();
 
@@ -44,5 +45,7 @@ router.delete("/category/:id", verifyToken, deleteCategory);
 router.post("/transaction", verifyToken, createTransaction);
 
 router.get("/transaction", verifyToken, getTransaction);
+
+router.put("/transaction/:id", verifyToken, updateTransactions);
 
 export default router;
