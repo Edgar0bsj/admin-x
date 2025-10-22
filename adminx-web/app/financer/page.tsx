@@ -438,13 +438,13 @@ const FormModal = ({
               <div className={styles.formGroup}>
                 <label>Tipo de Conta</label>
                 <select
-                  value={formData.type || "checking"}
+                  value={formData.type || "Débito"}
                   onChange={(e) =>
                     setFormData({ ...formData, type: e.target.value })
                   }
                 >
-                  <option value="d">Débito</option>
-                  <option value="c">Crédito</option>
+                  <option value="Débito">Débito</option>
+                  <option value="Crédito">Crédito</option>
                 </select>
               </div>
             </form>
@@ -717,7 +717,7 @@ const useCrudOperations = (
         "/financer/account/",
         {
           name: accountData.name,
-          type: accountData.type === "Crédito" ? "c" : "d",
+          type: accountData.type,
           balance: accountData.balance,
         },
         { headers: { Authorization: `Bearer ${token}` } }
@@ -736,6 +736,9 @@ const useCrudOperations = (
 
   const updateAccount = async (accountData: Account) => {
     try {
+      //====================================
+      console.log(accountData);
+      //====================================
       const token = localStorage.getItem("token");
       const response = await api.put(
         `/financer/account/${accountData.id}`,
@@ -1061,7 +1064,6 @@ export default function Financer() {
         alert("O campo saldo é obrigatório e deve ser um número válido!");
         return;
       }
-
       const newAccount: Account = {
         id: editingItem?.id || Date.now().toString(),
         name: formData.name.trim(),
