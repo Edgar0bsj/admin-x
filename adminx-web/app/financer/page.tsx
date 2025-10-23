@@ -736,9 +736,6 @@ const useCrudOperations = (
 
   const updateAccount = async (accountData: Account) => {
     try {
-      //====================================
-      console.log(accountData);
-      //====================================
       const token = localStorage.getItem("token");
       const response = await api.put(
         `/financer/account/${accountData.id}`,
