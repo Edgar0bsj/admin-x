@@ -12,6 +12,12 @@ import createTransaction from "../controllers/financerController/transactionCont
 import getTransaction from "../controllers/financerController/transactionControllers/getTransaction.controller.js";
 import updateTransactions from "../controllers/financerController/transactionControllers/updateTransactions.controller.js";
 import deletingTransaction from "../controllers/financerController/transactionControllers/deletingTransaction.controller.js";
+import createBudget from "../controllers/financerController/budgetControllers/createBudget.controller.js";
+import listBudgets from "../controllers/financerController/budgetControllers/listBudgets.controller.js";
+import updateBudget from "../controllers/financerController/budgetControllers/updateBudget.controller.js";
+import removeBudget from "../controllers/financerController/budgetControllers/removeBudget.controller.js";
+import specificBudget from "../controllers/financerController/budgetControllers/specificBudget.controller.js";
+import getBudgetSummary from "../controllers/financerController/budgetControllers/getBudgetSummary.controller.js";
 
 const router = Router();
 
@@ -50,5 +56,21 @@ router.get("/transaction", verifyToken, getTransaction);
 router.put("/transaction/:id", verifyToken, updateTransactions);
 
 router.delete("/transaction/:id", verifyToken, deletingTransaction);
+
+/**
+ * 	Budget
+ */
+
+router.post("/budget", verifyToken, createBudget);
+
+router.get("/budget", verifyToken, listBudgets);
+
+router.get("/budget/summary", verifyToken, getBudgetSummary);
+
+router.put("/budget/:id", verifyToken, updateBudget);
+
+router.delete("/budget/:id", verifyToken, removeBudget);
+
+router.get("/budget/:id", verifyToken, specificBudget);
 
 export default router;
