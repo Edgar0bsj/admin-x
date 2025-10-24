@@ -36,7 +36,7 @@ export default async function listBudgets(
      * Buscando orçamentos
      */
     const budgets: iBudget[] = await budgetModel.find(filter);
-    if (!budgets.length) throw new AppError("Nenhum orçamento encontrado");
+    if (!budgets.length) res.status(200).json([]);
 
     const result = await Promise.all(
       budgets.map(async (el) => {

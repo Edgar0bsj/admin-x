@@ -58,6 +58,19 @@ interface ResTransactionData {
   updatedAt: string;
 }
 
+interface ResBudgetData {
+  _id: string;
+  userId: string;
+  categoryId: string;
+  amount: number;
+  spent: number;
+  period: "mensal" | "semanal" | "anual";
+  startDate: string;
+  endDate: string;
+  createdAt: string;
+  updatedAt: string;
+}
+
 interface Transaction {
   id: string;
   accountId: string;
@@ -73,7 +86,7 @@ interface Budget {
   categoryId: string;
   amount: number;
   spent: number;
-  period: "monthly" | "weekly" | "yearly";
+  period: "mensal" | "semanal" | "anual";
   startDate: string;
   endDate: string;
 }
@@ -476,15 +489,42 @@ const FormModal = ({
               </div>
               <div className={styles.formGroup}>
                 <label>Ícone *</label>
-                <input
-                  type="text"
-                  value={formData.icon || ""}
-                  onChange={(e) =>
-                    setFormData({ ...formData, icon: e.target.value })
-                  }
-                  placeholder="Ex: 🍽️"
-                  required
-                />
+                <div className={styles.emojiSelector}>
+                  <div className={styles.emojiGrid}>
+                    {[
+                      "🍽️", "🍕", "🍔", "🍟", "🌮", "🌯", "🥗", "🥘",
+                      "🚗", "⛽", "🚌", "🚕", "🚙", "🏍️", "🚲", "✈️",
+                      "🏠", "🏡", "🏢", "🏪", "🏬", "🏨", "🏥", "🏦",
+                      "👕", "👖", "👗", "👔", "👘", "👙", "🧥", "🧦",
+                      "💊", "🏥", "🩺", "💉", "🩹", "🧴", "🧼", "🧽",
+                      "🎬", "🎭", "🎨", "🎪", "🎯", "🎮", "🎲", "🎸",
+                      "💰", "💳", "💎", "💸", "💵", "💴", "💶", "💷",
+                      "📱", "💻", "🖥️", "⌨️", "🖱️", "📷", "📹", "🎥"
+                    ].map((emoji) => (
+                      <button
+                        key={emoji}
+                        type="button"
+                        className={`${styles.emojiButton} ${
+                          formData.icon === emoji ? styles.selected : ""
+                        }`}
+                        onClick={() =>
+                          setFormData({ ...formData, icon: emoji })
+                        }
+                      >
+                        {emoji}
+                      </button>
+                    ))}
+                  </div>
+                  <input
+                    type="text"
+                    value={formData.icon || ""}
+                    onChange={(e) =>
+                      setFormData({ ...formData, icon: e.target.value })
+                    }
+                    placeholder="Ou digite um emoji personalizado"
+                    className={styles.emojiInput}
+                  />
+                </div>
               </div>
               <div className={styles.formGroup}>
                 <label>Tipo</label>
@@ -584,6 +624,78 @@ const FormModal = ({
                   <option value="expense">Despesa</option>
                   <option value="income">Receita</option>
                 </select>
+              </div>
+            </form>
+          )}
+
+          {activeTab === "budgets" && (
+            <form className={styles.form}>
+              <div className={styles.formGroup}>
+                <label>Categoria *</label>
+                <select
+                  value={formData.categoryId || ""}
+                  onChange={(e) =>
+                    setFormData({ ...formData, categoryId: e.target.value })
+                  }
+                  required
+                >
+                  <option value="">Selecione uma categoria</option>
+                  {categories.map((category) => (
+                    <option key={category.id} value={category.id}>
+                      {category.icon} {category.name}
+                    </option>
+                  ))}
+                </select>
+              </div>
+              <div className={styles.formGroup}>
+                <label>Valor do Orçamento *</label>
+                <input
+                  type="number"
+                  step="0.01"
+                  min="0.01"
+                  value={formData.amount || ""}
+                  onChange={(e) =>
+                    setFormData({ ...formData, amount: e.target.value })
+                  }
+                  placeholder="0.00"
+                  required
+                />
+              </div>
+              <div className={styles.formGroup}>
+                <label>Período *</label>
+                <select
+                  value={formData.period || "mensal"}
+                  onChange={(e) =>
+                    setFormData({ ...formData, period: e.target.value })
+                  }
+                  required
+                >
+                  <option value="semanal">Semanal</option>
+                  <option value="mensal">Mensal</option>
+                  <option value="anual">Anual</option>
+                </select>
+              </div>
+              <div className={styles.formGroup}>
+                <label>Data de Início *</label>
+                <input
+                  type="date"
+                  value={formData.startDate || ""}
+                  onChange={(e) =>
+                    setFormData({ ...formData, startDate: e.target.value })
+                  }
+                  required
+                />
+              </div>
+              <div className={styles.formGroup}>
+                <label>Data de Fim *</label>
+                <input
+                  type="date"
+                  value={formData.endDate || ""}
+                  onChange={(e) =>
+                    setFormData({ ...formData, endDate: e.target.value })
+                  }
+                  required
+                />
               </div>
             </form>
           )}
@@ -687,6 +799,33 @@ const useFinancerData = () => {
     }
   };
 
+  const loadBudgets = async () => {
+    try {
+      const token = localStorage.getItem("token");
+      const response = await api.get("/financer/budget/", {
+        headers: { Authorization: `Bearer ${token}` },
+      });
+
+      const data = response.data as ResBudgetData[];
+      const budgetsData = data.map(
+        (el) =>
+          ({
+            id: el._id,
+            categoryId: el.categoryId,
+            amount: el.amount,
+            spent: el.spent,
+            period: el.period,
+            startDate: el.startDate,
+            endDate: el.endDate,
+          } as Budget)
+      );
+
+      setBudgets(budgetsData);
+    } catch (error) {
+      console.error("Erro ao carregar orçamentos:", error);
+    }
+  };
+
   return {
     accounts,
     categories,
@@ -696,6 +835,7 @@ const useFinancerData = () => {
     loadAccounts,
     loadCategories,
     loadTransactions,
+    loadBudgets,
   };
 };
 
@@ -708,7 +848,8 @@ const useCrudOperations = (
   transactions: Transaction[],
   loadAccounts: () => void,
   loadCategories: () => void,
-  loadTransactions: () => void
+  loadTransactions: () => void,
+  loadBudgets: () => void
 ) => {
   const saveAccount = async (accountData: Account) => {
     try {
@@ -717,7 +858,7 @@ const useCrudOperations = (
         "/financer/account/",
         {
           name: accountData.name,
-          type: accountData.type,
+          type: accountData.type === "Crédito" ? "c" : "d",
           balance: accountData.balance,
         },
         { headers: { Authorization: `Bearer ${token}` } }
@@ -919,6 +1060,79 @@ const useCrudOperations = (
     }
   };
 
+  const saveBudget = async (budgetData: Budget) => {
+    try {
+      const token = localStorage.getItem("token");
+      const response = await api.post(
+        "/financer/budget/",
+        {
+          categoryId: budgetData.categoryId,
+          amount: budgetData.amount,
+          period: budgetData.period,
+          startDate: budgetData.startDate,
+          endDate: budgetData.endDate,
+        },
+        { headers: { Authorization: `Bearer ${token}` } }
+      );
+
+      if (response.status === 201) {
+        console.log("Orçamento criado com sucesso");
+        loadBudgets();
+      }
+      return response;
+    } catch (error) {
+      console.error("Erro ao salvar orçamento:", error);
+      throw error;
+    }
+  };
+
+  const updateBudget = async (budgetData: Budget) => {
+    try {
+      const token = localStorage.getItem("token");
+      const response = await api.put(
+        `/financer/budget/${budgetData.id}`,
+        {
+          categoryId: budgetData.categoryId,
+          amount: budgetData.amount,
+          period: budgetData.period,
+          startDate: budgetData.startDate,
+          endDate: budgetData.endDate,
+        },
+        { headers: { Authorization: `Bearer ${token}` } }
+      );
+
+      if (response.status === 200) {
+        console.log("Orçamento atualizado com sucesso");
+        loadBudgets();
+      }
+      return response;
+    } catch (error) {
+      console.error("Erro ao atualizar orçamento:", error);
+      throw error;
+    }
+  };
+
+  const deleteBudget = async (budgetId: string) => {
+    try {
+      const token = localStorage.getItem("token");
+      const response = await api.delete(
+        `/financer/budget/${budgetId}`,
+        {
+          headers: { Authorization: `Bearer ${token}` },
+        }
+      );
+
+      if (response.status === 204) {
+        console.log("Orçamento deletado com sucesso");
+        loadBudgets();
+      }
+      return response;
+    } catch (error) {
+      console.error("Erro ao deletar orçamento:", error);
+      throw error;
+    }
+  };
+
   return {
     saveAccount,
     updateAccount,
@@ -929,6 +1143,9 @@ const useCrudOperations = (
     saveTransaction,
     updateTransaction,
     deleteTransaction,
+    saveBudget,
+    updateBudget,
+    deleteBudget,
   };
 };
 
@@ -981,6 +1198,7 @@ export default function Financer() {
     loadAccounts,
     loadCategories,
     loadTransactions,
+    loadBudgets,
   } = useFinancerData();
 
   const {
@@ -993,13 +1211,17 @@ export default function Financer() {
     saveTransaction,
     updateTransaction,
     deleteTransaction,
+    saveBudget,
+    updateBudget,
+    deleteBudget,
   } = useCrudOperations(
     accounts,
     categories,
     transactions,
     loadAccounts,
     loadCategories,
-    loadTransactions
+    loadTransactions,
+    loadBudgets
   );
 
   const { getTotalBalance, getTotalSpent, getTotalBudget } = useCalculations(
@@ -1013,19 +1235,7 @@ export default function Financer() {
     loadAccounts();
     loadCategories();
     loadTransactions();
-
-    // Dados mock para orçamentos (em desenvolvimento)
-    setBudgets([
-      {
-        id: "1",
-        categoryId: "1",
-        amount: 500.0,
-        spent: 150.0,
-        period: "monthly",
-        startDate: "2024-01-01",
-        endDate: "2024-01-31",
-      },
-    ]);
+    loadBudgets();
   }, []);
 
   // Handlers de formulário
@@ -1065,7 +1275,7 @@ export default function Financer() {
         id: editingItem?.id || Date.now().toString(),
         name: formData.name.trim(),
         balance: parseFloat(formData.balance),
-        type: formData.type || "d",
+        type: formData.type || "Débito",
         createdAt:
           editingItem?.createdAt || new Date().toISOString().split("T")[0],
       };
@@ -1155,6 +1365,51 @@ export default function Financer() {
       }
     }
 
+    if (activeTab === "budgets") {
+      if (!formData.categoryId || formData.categoryId.trim() === "") {
+        alert("O campo categoria é obrigatório!");
+        return;
+      }
+      if (
+        !formData.amount ||
+        isNaN(parseFloat(formData.amount)) ||
+        parseFloat(formData.amount) <= 0
+      ) {
+        alert(
+          "O campo valor é obrigatório e deve ser um número maior que zero!"
+        );
+        return;
+      }
+      if (!formData.startDate || formData.startDate.trim() === "") {
+        alert("O campo data de início é obrigatório!");
+        return;
+      }
+      if (!formData.endDate || formData.endDate.trim() === "") {
+        alert("O campo data de fim é obrigatório!");
+        return;
+      }
+
+      const newBudget: Budget = {
+        id: editingItem?.id || Date.now().toString(),
+        categoryId: formData.categoryId,
+        amount: parseFloat(formData.amount),
+        spent: editingItem?.spent || 0,
+        period: formData.period || "mensal",
+        startDate: formData.startDate,
+        endDate: formData.endDate,
+      };
+
+      try {
+        if (editingItem) {
+          await updateBudget(newBudget);
+        } else {
+          await saveBudget(newBudget);
+        }
+      } catch (error) {
+        console.error("Erro ao salvar orçamento:", error);
+      }
+    }
+
     closeForm();
   };
 
@@ -1180,6 +1435,14 @@ export default function Financer() {
         await deleteTransaction(id);
       } catch (error) {
         console.error("Erro ao deletar transação:", error);
+      }
+    }
+
+    if (activeTab === "budgets") {
+      try {
+        await deleteBudget(id);
+      } catch (error) {
+        console.error("Erro ao deletar orçamento:", error);
       }
     }
   };
